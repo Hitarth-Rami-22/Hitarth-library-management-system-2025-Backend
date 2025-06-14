@@ -1,0 +1,89 @@
+﻿using LMS_API.Data;
+using LMS_API.DTOs;
+using LMS_API.Entities;
+using LMS_API.Interfaces;
+using LMS_API.Models;
+using Microsoft.EntityFrameworkCore;
+
+
+namespace LMS_API.Services
+{
+    public class BorrowService : IBorrowService
+    {
+        private readonly LibraryDbContext _context;
+
+        public BorrowService(LibraryDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<string> RequestBorrow(BorrowRequestDto dto)
+        {
+            var book = await _context.Books.FindAsync(dto.BookId);
+            if (book == null) throw new Exception("Book not found");
+
+            var student = await _context.Users.FirstOrDefaultAsync(u => u.Id == dto.StudentId && u.UserType == UserType.Student);
+            if (student == null) throw new Exception("Student not found");
+
+            int activeBorrowCount = await _context.BorrowRequests
+                .CountAsync(r => r.StudentId == dto.StudentId &&
+                                 (r.Status == BorrowStatus.Approved || r.Status == BorrowStatus.Pending));
+
+            if (activeBorrowCount >= 3)
+                throw new Exception("Borrow limit reached. Return a book to borrow a new one.");
+
+            var request = new BorrowRequest
+            {
+                BookId = dto.BookId,
+                StudentId = dto.StudentId,
+                Status = BorrowStatus.Pending
+            };
+
+            _context.BorrowRequests.Add(request);
+            await _context.SaveChangesAsync();
+
+            return "Borrow request submitted.";
+        }
+
+        public async Task<List<BorrowRequest>> GetAllRequests()
+        {
+            return await _context.BorrowRequests
+                .Include(b => b.Book)
+                .Include(b => b.Student)
+                .ToListAsync();
+        }
+
+        public async Task<List<BorrowRequest>> GetRequestsByStudent(int studentId)
+        {
+            return await _context.BorrowRequests
+                .Where(r => r.StudentId == studentId)
+                .Include(r => r.Book)
+                .OrderByDescending(r => r.RequestedOn)
+                .ToListAsync();
+        }
+
+        public async Task<string> UpdateBorrowStatus(UpdateBorrowStatusDto dto)
+        {
+            var request = await _context.BorrowRequests.Include(r => r.Book).FirstOrDefaultAsync(r => r.Id == dto.RequestId);
+            if (request == null) throw new Exception("Request not found");
+
+            request.Status = dto.NewStatus;
+
+            if (dto.NewStatus == BorrowStatus.Approved)
+            {
+                if (request.Book.Quantity <= 0) throw new Exception("Book is out of stock");
+                request.Book.Quantity--;
+                request.ApprovedOn = DateTime.UtcNow;
+            }
+
+            if (dto.NewStatus == BorrowStatus.Returned)
+            {
+                request.Book.Quantity++;
+                request.ReturnedOn = DateTime.UtcNow;
+            }
+
+            await _context.SaveChangesAsync();
+            return "Status updated successfully.";
+        }
+    }
+}
