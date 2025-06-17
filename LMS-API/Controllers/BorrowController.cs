@@ -42,11 +42,12 @@ namespace LMS_API.Controllers
         }
 
         [HttpPut("status")]
-        [Authorize(Roles = "Librarian")]
+        [Authorize(Roles = "Librarian,Student")]
         public async Task<IActionResult> UpdateStatus(UpdateBorrowStatusDto dto)
         {
             var result = await _service.UpdateBorrowStatus(dto);
             return Ok(new { message = result });
         }
+
     }
 }

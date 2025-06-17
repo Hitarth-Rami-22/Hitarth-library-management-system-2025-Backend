@@ -107,6 +107,7 @@ var jwtKey = config["Jwt:Key"];
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 
+
 // ✅ Swagger with JWT Support
 builder.Services.AddSwaggerGen(options =>
 {
@@ -179,7 +180,9 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
 builder.Services.AddScoped<IBookService, BookService>();
 builder.Services.AddScoped<IBorrowService, BorrowService>();
-
+builder.Services.AddScoped<WishlistService>();
+builder.Services.AddScoped<EmailService>();
+builder.Services.AddScoped<NotificationService>();
 
 
 var app = builder.Build();

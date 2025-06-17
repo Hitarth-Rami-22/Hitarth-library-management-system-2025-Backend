@@ -4,10 +4,11 @@ namespace LMS_API.Models
 {  
     public enum BorrowStatus
     {
-        Pending,
-        Approved,
-        Rejected,
-        Returned
+        Pending =  0,
+        Approved = 1,
+        Rejected = 2,
+        Returned = 3,
+        ReturnRequested = 4
     }
     public class BorrowRequest
     {

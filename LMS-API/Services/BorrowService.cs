@@ -6,15 +6,20 @@ using LMS_API.Models;
 using Microsoft.EntityFrameworkCore;
 
 
+
 namespace LMS_API.Services
 {
     public class BorrowService : IBorrowService
     {
         private readonly LibraryDbContext _context;
+        private readonly NotificationService _notificationService;
+        private readonly WishlistService _wishlistService;
 
-        public BorrowService(LibraryDbContext context)
+        public BorrowService(LibraryDbContext context, NotificationService notificationService, WishlistService wishlistService)
         {
             _context = context;
+            _notificationService = notificationService;
+            _wishlistService = wishlistService;
         }
 
         public async Task<string> RequestBorrow(BorrowRequestDto dto)
@@ -62,6 +67,8 @@ namespace LMS_API.Services
                 .ToListAsync();
         }
 
+
+
         public async Task<string> UpdateBorrowStatus(UpdateBorrowStatusDto dto)
         {
             var request = await _context.BorrowRequests.Include(r => r.Book).FirstOrDefaultAsync(r => r.Id == dto.RequestId);
@@ -71,19 +78,96 @@ namespace LMS_API.Services
 
             if (dto.NewStatus == BorrowStatus.Approved)
             {
-                if (request.Book.Quantity <= 0) throw new Exception("Book is out of stock");
+                if (request.Book.Quantity <= 0)
+                    throw new Exception("Book is out of stock");
+
                 request.Book.Quantity--;
                 request.ApprovedOn = DateTime.UtcNow;
+
+                await _context.SaveChangesAsync();
+                return "Status updated successfully.";
             }
 
             if (dto.NewStatus == BorrowStatus.Returned)
             {
                 request.Book.Quantity++;
                 request.ReturnedOn = DateTime.UtcNow;
+
+                // ✅ Notify all students who had wishlisted this book
+                if (request.Book.Quantity > 0)
+                {
+                    var wishlistedStudents = await _context.Wishlists
+                        .Where(w => w.BookId == request.BookId)
+                        .Select(w => w.StudentId)
+                        .Distinct()
+                        .ToListAsync();
+
+                    foreach (var studentId in wishlistedStudents)
+                    {
+                        var message = $"The book \"{request.Book.Title}\" is now available.";
+                        try
+                        {
+                            await _notificationService.SendNotificationAsync(studentId, request.BookId, message);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"❌ Notification failed: {ex.Message}");
+                            // Optionally log or rethrow
+                        }
+                    }
+                }
+
+                await _context.SaveChangesAsync();
+                return "Status updated successfully.";
             }
 
+            // If status is neither Approved nor Returned
             await _context.SaveChangesAsync();
             return "Status updated successfully.";
         }
+
+        //public async Task<string> UpdateBorrowStatus(UpdateBorrowStatusDto dto)
+        //{
+        //    var request = await _context.BorrowRequests.Include(r => r.Book).FirstOrDefaultAsync(r => r.Id == dto.RequestId);
+        //    if (request == null) throw new Exception("Request not found");
+
+        //    request.Status = dto.NewStatus;
+
+        //    if (dto.NewStatus == BorrowStatus.Approved)
+        //    {
+        //        if (request.Book.Quantity <= 0) throw new Exception("Book is out of stock");
+        //        request.Book.Quantity--;
+        //        request.ApprovedOn = DateTime.UtcNow;
+        //    }
+
+        //    //if (dto.NewStatus == BorrowStatus.Returned)
+        //    //{
+        //    //    request.Book.Quantity++;
+        //    //    request.ReturnedOn = DateTime.UtcNow;
+        //    //}
+        //    if (dto.NewStatus == BorrowStatus.Returned)
+        //    {
+        //        request.Book.Quantity++;
+        //        request.ReturnedOn = DateTime.UtcNow;
+
+        //        // Notify all students who had wishlisted this book
+        //        if (request.Book.Quantity > 0)
+        //        {
+        //            var wishlistedStudents = await _context.Wishlists
+        //                .Where(w => w.BookId == request.BookId)
+        //                .Select(w => w.StudentId)
+        //                .Distinct()
+        //                .ToListAsync();
+
+        //            foreach (var studentId in wishlistedStudents)
+        //            {
+        //                var message = $"The book \"{request.Book.Title}\" is now available.";
+        //                await _notificationService.SendNotificationAsync(studentId, request.BookId, message);
+        //            }
+        //            await _context.SaveChangesAsync();
+        //            return "Status updated successfully.";
+        //        }
+        //    }
+        //}
     }
 }

@@ -10,5 +10,7 @@ namespace LMS_API.Interfaces
         Task<Book> AddBook(BookDto dto);
         Task<Book> UpdateBook(int id, BookDto dto);
         Task<bool> DeleteBook(int id);
+
+
     }
 }
