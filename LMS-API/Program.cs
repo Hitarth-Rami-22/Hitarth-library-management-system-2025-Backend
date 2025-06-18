@@ -183,6 +183,8 @@ builder.Services.AddScoped<IBorrowService, BorrowService>();
 builder.Services.AddScoped<WishlistService>();
 builder.Services.AddScoped<EmailService>();
 builder.Services.AddScoped<NotificationService>();
+builder.Services.AddHostedService<PenaltyBackgroundService>();
+
 
 
 var app = builder.Build();

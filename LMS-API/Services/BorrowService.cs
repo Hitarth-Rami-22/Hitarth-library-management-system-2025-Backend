@@ -199,14 +199,16 @@ namespace LMS_API.Services
 
             foreach (var request in overdueRequests)
             {
-                var overdueDays = (DateTime.UtcNow - request.ApprovedOn.Value).Days - 7;
+                //var overdueDays = (DateTime.UtcNow - request.ApprovedOn.Value).Days - 0;
+                var overdueDays = (DateTime.UtcNow - request.ApprovedOn.Value).TotalDays - 0;
+
 
                 //Console.WriteLine($"📅 Student {request.StudentId} has overdueDays = {overdueDays}");
                 Console.WriteLine($"DEBUG: Borrow ID {request.Id}, OverdueDays = {overdueDays}");
                 if (overdueDays > 0)
                 {
                     var penalty = 100 + (overdueDays - 1) * 50;
-                    request.PenaltyAmount = penalty;
+                    request.PenaltyAmount = (int)penalty;
 
                     Console.WriteLine($"💰 Applying ₹{penalty} to Student ID {request.StudentId}");
 
@@ -215,7 +217,7 @@ namespace LMS_API.Services
                         var subject = $"📚 Penalty Notice - {request.Book.Title}";
                         var body = $"Dear {request.Student.Email},<br/><br/>" +
                                    $"You have not returned the book <b>{request.Book.Title}</b> issued on <b>{request.ApprovedOn.Value.ToShortDateString()}</b>.<br/>" +
-                                   $"Your current penalty is <b>₹{penalty}</b>.<br/><br/>" +
+                                   $"Your current penalty is <b>₹{request.PenaltyAmount}</b>.<br/><br/>" +
                                    $"Please return the book as soon as possible to stop the penalty increase.";
 
                         await _emailService.SendEmailAsync(request.Student.Email, subject, body);
@@ -225,6 +227,21 @@ namespace LMS_API.Services
 
             await _context.SaveChangesAsync();
         }
+        public async Task<List<BorrowRequest>> GetPenaltiesAsync(string role, int userId)
+        {
+            var query = _context.BorrowRequests
+                .Include(r => r.Book)
+                .Include(r => r.Student)
+                .Where(r => r.PenaltyAmount > 0 && r.Status == BorrowStatus.Approved);
+
+            if (role == "Student")
+            {
+                query = query.Where(r => r.StudentId == userId);
+            }
+
+            return await query.OrderByDescending(r => r.ApprovedOn).ToListAsync();
+        }
+
 
     }
 }

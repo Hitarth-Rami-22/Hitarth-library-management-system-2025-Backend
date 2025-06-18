@@ -184,6 +184,16 @@
   },
   {
     "ContainingType": "LMS_API.Controllers.BorrowController",
+    "Method": "GetPenalties",
+    "RelativePath": "api/Borrow/penalties",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "LMS_API.Controllers.BorrowController",
     "Method": "UpdateStatus",
     "RelativePath": "api/Borrow/status",
     "HttpMethod": "PUT",

@@ -3,6 +3,7 @@ using LMS_API.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LMS_API.Controllers
 {
@@ -50,12 +51,26 @@ namespace LMS_API.Controllers
         }
 
         [HttpPost("apply-penalties")]
-        //[AllowAnonymous]
-        //[Authorize(Roles = "Admin,Librarian,Student")]
+        [Authorize(Roles = "Admin,Librarian,Student")]
         public async Task<IActionResult> ApplyPenalties()
         {
             await _service.ApplyPenaltiesAsync();
             return Ok("Penalties calculated and emails sent.");
+        }
+
+        [HttpGet("penalties")]
+        [Authorize(Roles = "Admin,Librarian,Student")]
+        public async Task<IActionResult> GetPenalties()
+        {
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            
+
+            if (string.IsNullOrEmpty(userIdClaim)) return Unauthorized("Missing user identity.");
+            int userId = int.Parse(userIdClaim);
+
+            var data = await _service.GetPenaltiesAsync(role, userId);
+            return Ok(data);
         }
 
 
