@@ -49,5 +49,15 @@ namespace LMS_API.Controllers
             return Ok(new { message = result });
         }
 
+        [HttpPost("apply-penalties")]
+        //[AllowAnonymous]
+        //[Authorize(Roles = "Admin,Librarian,Student")]
+        public async Task<IActionResult> ApplyPenalties()
+        {
+            await _service.ApplyPenaltiesAsync();
+            return Ok("Penalties calculated and emails sent.");
+        }
+
+
     }
 }

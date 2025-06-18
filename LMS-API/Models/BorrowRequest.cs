@@ -21,6 +21,8 @@ namespace LMS_API.Models
         public User Student { get; set; }
 
         public BorrowStatus Status { get; set; } = BorrowStatus.Pending;
+        public int PenaltyAmount { get; set; } = 0;
+
 
         public DateTime RequestedOn { get; set; } = DateTime.UtcNow;
         public DateTime? ApprovedOn { get; set; }

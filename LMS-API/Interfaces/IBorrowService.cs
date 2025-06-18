@@ -9,5 +9,6 @@ namespace LMS_API.Interfaces
         Task<List<BorrowRequest>> GetAllRequests();
         Task<List<BorrowRequest>> GetRequestsByStudent(int studentId);
         Task<string> UpdateBorrowStatus(UpdateBorrowStatusDto dto);
+        Task ApplyPenaltiesAsync();
     }
 }

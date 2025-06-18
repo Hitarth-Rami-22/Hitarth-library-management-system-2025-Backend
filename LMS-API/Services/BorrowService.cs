@@ -14,12 +14,14 @@ namespace LMS_API.Services
         private readonly LibraryDbContext _context;
         private readonly NotificationService _notificationService;
         private readonly WishlistService _wishlistService;
+        private readonly EmailService _emailService;
 
-        public BorrowService(LibraryDbContext context, NotificationService notificationService, WishlistService wishlistService)
+        public BorrowService(LibraryDbContext context, NotificationService notificationService, WishlistService wishlistService, EmailService emailService)
         {
             _context = context;
             _notificationService = notificationService;
             _wishlistService = wishlistService;
+            _emailService = emailService;
         }
 
         public async Task<string> RequestBorrow(BorrowRequestDto dto)
@@ -169,5 +171,60 @@ namespace LMS_API.Services
         //        }
         //    }
         //}
+        //public async Task ApplyPenaltiesAsync()
+        //{
+        //    var overdueRequests = await _context.BorrowRequests
+        //        .Where(r => r.Status == BorrowStatus.Approved &&
+        //                    r.ApprovedOn != null &&
+        //                    r.ReturnedOn == null &&
+        //                    EF.Functions.DateDiffDay(r.ApprovedOn.Value, DateTime.UtcNow) > 7)
+        //        .ToListAsync();
+
+        //    foreach (var request in overdueRequests)
+        //    {
+        //        var daysOverdue = (DateTime.UtcNow - request.ApprovedOn.Value).Days;
+        //        var penaltyDays = daysOverdue - 1;
+        //        request.PenaltyAmount = 100 + (penaltyDays * 50);
+        //    }
+
+        //    await _context.SaveChangesAsync();
+        //}
+        public async Task ApplyPenaltiesAsync()
+        {
+            var overdueRequests = await _context.BorrowRequests
+                .Include(r => r.Student)
+                .Include(r => r.Book)
+                .Where(r => r.Status == BorrowStatus.Approved && r.ApprovedOn != null)
+                .ToListAsync();
+
+            foreach (var request in overdueRequests)
+            {
+                var overdueDays = (DateTime.UtcNow - request.ApprovedOn.Value).Days - 7;
+
+                //Console.WriteLine($"📅 Student {request.StudentId} has overdueDays = {overdueDays}");
+                Console.WriteLine($"DEBUG: Borrow ID {request.Id}, OverdueDays = {overdueDays}");
+                if (overdueDays > 0)
+                {
+                    var penalty = 100 + (overdueDays - 1) * 50;
+                    request.PenaltyAmount = penalty;
+
+                    Console.WriteLine($"💰 Applying ₹{penalty} to Student ID {request.StudentId}");
+
+                    if (!string.IsNullOrWhiteSpace(request.Student?.Email))
+                    {
+                        var subject = $"📚 Penalty Notice - {request.Book.Title}";
+                        var body = $"Dear {request.Student.Email},<br/><br/>" +
+                                   $"You have not returned the book <b>{request.Book.Title}</b> issued on <b>{request.ApprovedOn.Value.ToShortDateString()}</b>.<br/>" +
+                                   $"Your current penalty is <b>₹{penalty}</b>.<br/><br/>" +
+                                   $"Please return the book as soon as possible to stop the penalty increase.";
+
+                        await _emailService.SendEmailAsync(request.Student.Email, subject, body);
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
     }
 }
