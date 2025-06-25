@@ -20,22 +20,8 @@ namespace LMS_API.Controllers
         {
             _service = service;
         }
-        //[HttpPost]
-        //public async Task<IActionResult> AddToWishlist([FromBody] WishlistDto dto)
-        //{
-        //    bool exists = await _service.IsAlreadyWishlisted(dto.StudentId, dto.BookId);
-        //    if (exists)
-        //        return BadRequest("Already in wishlist.");
 
-        //    var wishlist = new Wishlist
-        //    {
-        //        StudentId = dto.StudentId,
-        //        BookId = dto.BookId
-        //    };
-
-        //    await _service.AddWishlist(wishlist);
-        //    return Ok("Added to wishlist");
-        //}
+        
 
         [HttpPost]
         public async Task<IActionResult> AddToWishlist([FromBody] WishlistDto dto)

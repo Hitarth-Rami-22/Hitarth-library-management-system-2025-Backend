@@ -95,7 +95,7 @@ namespace LMS_API.Services
                 request.Book.Quantity++;
                 request.ReturnedOn = DateTime.UtcNow;
 
-                // ✅ Notify all students who had wishlisted this book
+                //  Notify all students who had wishlisted this book
                 if (request.Book.Quantity > 0)
                 {
                     var wishlistedStudents = await _context.Wishlists
@@ -128,67 +128,7 @@ namespace LMS_API.Services
             return "Status updated successfully.";
         }
 
-        //public async Task<string> UpdateBorrowStatus(UpdateBorrowStatusDto dto)
-        //{
-        //    var request = await _context.BorrowRequests.Include(r => r.Book).FirstOrDefaultAsync(r => r.Id == dto.RequestId);
-        //    if (request == null) throw new Exception("Request not found");
-
-        //    request.Status = dto.NewStatus;
-
-        //    if (dto.NewStatus == BorrowStatus.Approved)
-        //    {
-        //        if (request.Book.Quantity <= 0) throw new Exception("Book is out of stock");
-        //        request.Book.Quantity--;
-        //        request.ApprovedOn = DateTime.UtcNow;
-        //    }
-
-        //    //if (dto.NewStatus == BorrowStatus.Returned)
-        //    //{
-        //    //    request.Book.Quantity++;
-        //    //    request.ReturnedOn = DateTime.UtcNow;
-        //    //}
-        //    if (dto.NewStatus == BorrowStatus.Returned)
-        //    {
-        //        request.Book.Quantity++;
-        //        request.ReturnedOn = DateTime.UtcNow;
-
-        //        // Notify all students who had wishlisted this book
-        //        if (request.Book.Quantity > 0)
-        //        {
-        //            var wishlistedStudents = await _context.Wishlists
-        //                .Where(w => w.BookId == request.BookId)
-        //                .Select(w => w.StudentId)
-        //                .Distinct()
-        //                .ToListAsync();
-
-        //            foreach (var studentId in wishlistedStudents)
-        //            {
-        //                var message = $"The book \"{request.Book.Title}\" is now available.";
-        //                await _notificationService.SendNotificationAsync(studentId, request.BookId, message);
-        //            }
-        //            await _context.SaveChangesAsync();
-        //            return "Status updated successfully.";
-        //        }
-        //    }
-        //}
-        //public async Task ApplyPenaltiesAsync()
-        //{
-        //    var overdueRequests = await _context.BorrowRequests
-        //        .Where(r => r.Status == BorrowStatus.Approved &&
-        //                    r.ApprovedOn != null &&
-        //                    r.ReturnedOn == null &&
-        //                    EF.Functions.DateDiffDay(r.ApprovedOn.Value, DateTime.UtcNow) > 7)
-        //        .ToListAsync();
-
-        //    foreach (var request in overdueRequests)
-        //    {
-        //        var daysOverdue = (DateTime.UtcNow - request.ApprovedOn.Value).Days;
-        //        var penaltyDays = daysOverdue - 1;
-        //        request.PenaltyAmount = 100 + (penaltyDays * 50);
-        //    }
-
-        //    await _context.SaveChangesAsync();
-        //}
+       
         public async Task ApplyPenaltiesAsync()
         {
             var overdueRequests = await _context.BorrowRequests
@@ -200,7 +140,7 @@ namespace LMS_API.Services
             foreach (var request in overdueRequests)
             {
                 //var overdueDays = (DateTime.UtcNow - request.ApprovedOn.Value).Days - 0;
-                var overdueDays = (DateTime.UtcNow - request.ApprovedOn.Value).TotalDays - 0;
+                var overdueDays = (DateTime.UtcNow - request.ApprovedOn.Value).TotalDays - 7;
 
 
                 //Console.WriteLine($"📅 Student {request.StudentId} has overdueDays = {overdueDays}");

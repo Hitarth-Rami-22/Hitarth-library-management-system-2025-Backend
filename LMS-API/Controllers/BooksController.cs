@@ -42,13 +42,7 @@ namespace LMS_API.Controllers
             return Ok(book);
         }
 
-        //[HttpPut("{id}")]
-        //[Authorize(Roles = "Admin,Librarian")]
-        //public async Task<IActionResult> Update(int id, BookDto dto)
-        //{
-        //    var book = await _bookService.UpdateBook(id, dto);
-        //    return Ok(book);
-        //}
+        
         [HttpPut("{id}")]
         [Authorize(Roles = "Admin,Librarian")]
         public async Task<IActionResult> Update(int id, Book updatedBook)
