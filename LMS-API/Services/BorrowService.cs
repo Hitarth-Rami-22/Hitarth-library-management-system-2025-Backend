@@ -172,7 +172,8 @@ namespace LMS_API.Services
             var query = _context.BorrowRequests
                 .Include(r => r.Book)
                 .Include(r => r.Student)
-                .Where(r => r.PenaltyAmount > 0 && r.Status == BorrowStatus.Approved);
+                .Where(r => r.PenaltyAmount > 0 &&
+                            (r.Status == BorrowStatus.Approved || r.Status == BorrowStatus.Returned));
 
             if (role == "Student")
             {
