@@ -1,0 +1,82 @@
+<div class="page-wrap">
+  <!-- ── Hero Section ─────────────────── -->
+  <div class="hero-section">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+      <h1 class="hero-title">Discover Your Next Read</h1>
+      <p class="hero-sub">Explore our extensive collection of books and embark on a new journey.</p>
+
+      <!-- 🔍 Premium Search Bar -->
+      <div class="search-box">
+        <div class="search-ic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+        </div>
+        <input type="text" class="search-inp" placeholder="Search by title, author, or genre..."
+          [(ngModel)]="searchText">
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Available Books Grid ──────────── -->
+  <div class="content-body">
+    <div class="section-hdr">
+      <h2 class="section-title">Available Books</h2>
+      <div class="stats-badge">{{ (filteredBooks() || []).length }} matches</div>
+    </div>
+
+    <div class="books-grid">
+      <div class="book-card" *ngFor="let book of filteredBooks()">
+        <div class="card-cover">
+          <!-- Placeholder Icon since we don't have real covers -->
+          <div class="cover-ic" [style.background-color]="getAccentColor(book.id)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+          </div>
+          <div class="badge-row">
+            <span class="stock-badge" [class.low]="book.quantity <= 2" [class.out]="book.quantity === 0">
+              {{ book.quantity === 0 ? 'Out of Stock' : book.quantity + ' Available' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="card-body">
+          <h3 class="book-title">{{ book.title }}</h3>
+          <p class="book-author">by {{ book.author }}</p>
+
+          <div class="card-footer">
+            <ng-container *ngIf="book.quantity > 0; else showWishlist">
+              <button class="btn-borrow" (click)="borrow(book.id)">
+                <span>Borrow Now</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
+            </ng-container>
+
+            <ng-template #showWishlist>
+              <button class="btn-wishlist" (click)="addToWishlist(book.id)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+                <span>Notify Me</span>
+              </button>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filteredBooks().length === 0">
+      <div class="empty-ic">📚</div>
+      <h3>No books found</h3>
+      <p>Try adjusting your search criteria or explore other categories.</p>
+    </div>
+  </div>
+</div>

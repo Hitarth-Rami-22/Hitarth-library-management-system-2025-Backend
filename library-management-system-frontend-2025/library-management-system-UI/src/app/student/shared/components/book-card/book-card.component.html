@@ -1,0 +1,21 @@
+<div class="book-card">
+    <div class="card-image" [style.background-color]="accentColor">
+        <div class="book-placeholder">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+        </div>
+        <div class="availability-badge"
+            [ngClass]="{'low': availability > 0 && availability < 5, 'out': availability === 0}">
+            {{ availability === 0 ? 'Out of Stock' : availability + ' Available' }}
+        </div>
+    </div>
+    <div class="card-content">
+        <h3 class="book-title">{{ title }}</h3>
+        <p class="book-author">by {{ author }}</p>
+        <div class="card-actions">
+            <ng-content select="[actions]"></ng-content>
+        </div>
+    </div>
+</div>

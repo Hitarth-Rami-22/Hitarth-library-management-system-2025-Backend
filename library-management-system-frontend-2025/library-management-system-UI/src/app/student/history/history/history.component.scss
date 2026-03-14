@@ -1,0 +1,382 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+$font: 'Inter', sans-serif;
+$indigo: #6366f1;
+$indigo-dark: #4f46e5;
+$indigo-lt: #eef2ff;
+$green: #10b981;
+$green-lt: #d1fae5;
+$amber: #f59e0b;
+$amber-lt: #fef3c7;
+$red: #ef4444;
+$red-lt: #fee2e2;
+$violet: #8b5cf6;
+$violet-lt: #ede9fe;
+$text: #1e293b;
+$sub: #64748b;
+$border: #e2e8f0;
+$card: #ffffff;
+$bg: #f8fafc;
+$ease: all 0.2s ease;
+$r-lg: 16px;
+$r-md: 10px;
+$shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+.page-wrap {
+  padding: 2.5rem;
+  min-height: 100%;
+}
+
+/* ── Page Header ───────────────────── */
+.page-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+
+  .hdr-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .hdr-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    &.indigo {
+      background: $indigo-lt;
+      color: $indigo;
+    }
+  }
+
+  .pg-title {
+    font-size: 1.85rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.5px;
+  }
+
+  .pg-sub {
+    color: $sub;
+    margin: 0.25rem 0 0;
+    font-size: 0.95rem;
+  }
+}
+
+.btn-refresh {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.25rem;
+  background: #fff;
+  border: 1.5px solid $border;
+  border-radius: $r-md;
+  font-weight: 700;
+  font-family: $font;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: $ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    color: $sub;
+    transition: transform 0.5s ease;
+  }
+
+  &:hover {
+    background: $bg;
+    border-color: $indigo;
+    color: $indigo;
+
+    svg {
+      transform: rotate(180deg);
+      color: $indigo;
+    }
+  }
+}
+
+/* ── KPI Grid ─────────────────────── */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.kpi-card {
+  background: #fff;
+  padding: 1.5rem;
+  border-radius: $r-lg;
+  border: 1.5px solid $border;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  transition: $ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: $shadow;
+  }
+
+  .k-val {
+    font-size: 2.25rem;
+    font-weight: 800;
+    line-height: 1.1;
+  }
+
+  .k-lbl {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: $sub;
+  }
+
+  .k-progress {
+    height: 6px;
+    background: $bg;
+    border-radius: 3px;
+    margin-top: 1rem;
+    overflow: hidden;
+
+    .kp-bar {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+  }
+
+  &.indigo .k-val {
+    color: $indigo;
+  }
+
+  &.indigo .kp-bar {
+    background: $indigo;
+  }
+
+  &.green .k-val {
+    color: $green;
+  }
+
+  &.green .kp-bar {
+    background: $green;
+  }
+
+  &.amber .k-val {
+    color: $amber;
+  }
+
+  &.amber .kp-bar {
+    background: $amber;
+  }
+
+  &.violet .k-val {
+    color: $violet;
+  }
+
+  &.violet .kp-bar {
+    background: $violet;
+  }
+}
+
+/* ── Table Card ────────────────────── */
+.content-card {
+  background: #fff;
+  border: 1.5px solid $border;
+  border-radius: $r-lg;
+  overflow: hidden;
+  box-shadow: $shadow;
+}
+
+.card-hdr {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1.5px solid $border;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba($bg, 0.5);
+
+  .card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-size: 1rem;
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      background: $indigo;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba($indigo, 0.15);
+    }
+  }
+}
+
+.tbl-container {
+  overflow-x: auto;
+}
+
+.premium-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th {
+    padding: 1rem 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $sub;
+    background: #fafafa;
+    border-bottom: 1.5px solid $border;
+  }
+
+  td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1.5px solid #f1f5f9;
+    font-size: 0.9rem;
+    vertical-align: middle;
+  }
+
+  .row-num {
+    font-weight: 700;
+    color: $sub;
+    width: 50px;
+  }
+
+  .book-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .book-ic {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: #fff;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .book-meta {
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      font-weight: 700;
+      color: $text;
+    }
+
+    .author {
+      font-size: 0.75rem;
+      color: $sub;
+    }
+  }
+
+  .date-cell {
+    color: $sub;
+    font-family: 'Inter', monospace;
+    font-size: 0.85rem;
+  }
+
+  .return-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.6rem;
+    background: $green-lt;
+    color: darken($green, 15%);
+    border-radius: 50px;
+    font-size: 0.8rem;
+    font-weight: 700;
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+  }
+}
+
+/* ── Status Badges ─────────────── */
+.status-badge {
+  padding: 0.35rem 0.75rem;
+  border-radius: 50px;
+  font-size: 0.75rem;
+  font-weight: 700;
+
+  &.status-pending {
+    background: $amber-lt;
+    color: darken($amber, 20%);
+  }
+
+  &.status-approved {
+    background: $indigo-lt;
+    color: $indigo;
+  }
+
+  &.status-returned {
+    background: #f1f5f9;
+    color: $sub;
+  }
+
+  &.status-unknown {
+    background: #eee;
+    color: #444;
+  }
+}
+
+/* ── Empty State ───────────────── */
+.empty-row {
+  padding: 0 !important;
+}
+
+.empty-state {
+  padding: 5rem 2rem;
+  text-align: center;
+  color: $sub;
+
+  .empty-ic {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  p {
+    font-size: 1.1rem;
+    font-weight: 500;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-wrap {
+    padding: 1.5rem;
+  }
+
+  .kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-hdr .pg-title {
+    font-size: 1.5rem;
+  }
+}

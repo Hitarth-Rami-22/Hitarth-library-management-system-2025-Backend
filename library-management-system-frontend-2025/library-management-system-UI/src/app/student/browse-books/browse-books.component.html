@@ -1,0 +1,49 @@
+<div class="page-wrap">
+    <app-page-header title="Browse Collection"
+        subtitle="Explore thousands of titles across various genres and request your next read.">
+        <div actions class="header-search">
+            <div class="search-input-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <input type="text" [(ngModel)]="searchText" placeholder="Search by title, author, or ISBN..."
+                    class="search-input">
+            </div>
+        </div>
+    </app-page-header>
+
+    <div class="catalog-content">
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loader-container">
+            <div class="spinner"></div>
+            <p>Curating your collection...</p>
+        </div>
+
+        <!-- No Results -->
+        <div *ngIf="!isLoading && filteredBooks.length === 0" class="empty-state">
+            <div class="empty-icon">📂</div>
+            <h3>No books found</h3>
+            <p>Try adjusting your search terms or filters to find what you're looking for.</p>
+            <button class="btn btn-secondary" (click)="searchText = ''">Clear Search</button>
+        </div>
+
+        <!-- Books Grid -->
+        <div class="books-grid" *ngIf="!isLoading && filteredBooks.length > 0">
+            <app-book-card *ngFor="let book of filteredBooks" [title]="book.title" [author]="book.author"
+                [availability]="book.availability" [accentColor]="getAccentColor(book.id)">
+
+                <div actions class="book-actions">
+                    <button class="btn btn-primary" [disabled]="book.availability === 0" (click)="borrow(book.id)">
+                        {{ book.availability === 0 ? 'Out of Stock' : 'Request Borrow' }}
+                    </button>
+                    <button class="btn btn-icon" (click)="addToWishlist(book.id)" title="Add to Wishlist">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </app-book-card>
+        </div>
+    </div>
+</div>

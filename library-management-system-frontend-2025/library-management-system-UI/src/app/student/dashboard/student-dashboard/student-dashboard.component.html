@@ -1,0 +1,95 @@
+<div class="dashboard-wrap">
+    <!-- ── Hero Banner ───────────────────── -->
+    <header class="hero-banner">
+        <div class="hero-content">
+            <div class="welcome-chip">👋 Welcome back, {{ studentName }}</div>
+            <h1 class="hero-title">Your Personal Library Dashboard</h1>
+            <p class="hero-subtitle">Manage your reading journey, track requests, and explore new titles.</p>
+
+            <div class="quick-actions">
+                <button class="btn btn-primary" routerLink="/student-dashboard/browse">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    Browse Books
+                </button>
+                <button class="btn btn-outline" routerLink="/student-dashboard/borrowed-books">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    My Borrows
+                </button>
+            </div>
+        </div>
+        <div class="hero-decoration">
+            <div class="glow-circle"></div>
+        </div>
+    </header>
+
+    <!-- ── Stats Grid ────────────────────── -->
+    <div class="stats-grid">
+        <app-stat-card label="Borrowed Books" [value]="stats.borrowed" color="indigo" trend="Active Loans"
+            trendType="neutral">
+        </app-stat-card>
+        <app-stat-card label="Pending Requests" [value]="stats.pending" color="amber" trend="Awaiting Approval"
+            trendType="neutral">
+        </app-stat-card>
+        <app-stat-card label="Due Soon" [value]="stats.dueSoon" color="green" trend="Next 3 days" trendType="neutral">
+        </app-stat-card>
+        <app-stat-card label="Penalties Due" [value]="stats.penalties | currency:'INR':'symbol':'1.0-0'" color="red"
+            trend="Unpaid fines" trendType="neutral">
+        </app-stat-card>
+    </div>
+
+    <!-- ── Main Content Area ──────────────── -->
+    <div class="dashboard-content">
+        <!-- Recent Activity Table -->
+        <div class="content-card">
+            <app-page-header title="Recent Activity"
+                subtitle="Your latest requests and library interactions"></app-page-header>
+
+            <app-data-table [headers]="['Activity', 'Book', 'Status', 'Date']" [loading]="isLoading"
+                [emptyMessage]="'No recent library activity found.'">
+                <tr *ngFor="let activity of recentActivities">
+                    <td>
+                        <div class="activity-info">
+                            <span class="activity-dot" [ngClass]="getStatusType(activity.status)"></span>
+                            <span class="activity-name">Borrow Request</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="book-cell">
+                            <strong>{{ activity.book?.title }}</strong>
+                            <span class="author">by {{ activity.book?.author }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <app-status-badge [label]="getStatusLabel(activity.status)"
+                            [type]="getStatusType(activity.status)"></app-status-badge>
+                    </td>
+                    <td>
+                        <span class="date-text">{{ activity.requestedOn | date:'mediumDate' }}</span>
+                    </td>
+                </tr>
+            </app-data-table>
+        </div>
+
+        <!-- Quick Tips / Guidelines -->
+        <aside class="dashboard-aside">
+            <div class="aside-card highlight">
+                <h3>Need Help?</h3>
+                <p>Read our library guidelines or contact a librarian for assistance with your book requests.</p>
+                <button class="btn btn-text">View Guidelines →</button>
+            </div>
+
+            <div class="aside-card">
+                <h3>Library Hours</h3>
+                <ul class="hours-list">
+                    <li><span>Mon - Fri</span> <span>9:00 - 18:00</span></li>
+                    <li><span>Saturday</span> <span>10:00 - 16:00</span></li>
+                    <li><span>Sunday</span> <span class="closed">Closed</span></li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+</div>

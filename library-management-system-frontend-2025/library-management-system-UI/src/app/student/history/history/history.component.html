@@ -1,0 +1,125 @@
+<div class="page-wrap">
+  <!-- ── Page Header ───────────────────── -->
+  <div class="page-hdr">
+    <div class="hdr-left">
+      <div class="hdr-icon indigo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="pg-title">Borrowing History</h1>
+        <p class="pg-sub">Track your library journey and book statuses</p>
+      </div>
+    </div>
+    <div class="hdr-right">
+      <button class="btn-refresh" (click)="loadHistory()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+        </svg>
+        <span>Sync Activity</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ── KPI Overview ───────────────────── -->
+  <div class="kpi-grid">
+    <div class="kpi-card indigo">
+      <div class="k-val">{{ history.length }}</div>
+      <div class="k-lbl">Total Requests</div>
+      <div class="k-progress">
+        <div class="kp-bar" style="width: 100%"></div>
+      </div>
+    </div>
+    <div class="kpi-card green">
+      <div class="k-val">{{ getCountByStatus(2) }}</div>
+      <div class="k-lbl">Currently Approved</div>
+      <div class="k-progress">
+        <div class="kp-bar" [style.width]="getPercent(2)"></div>
+      </div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="k-val">{{ getCountByStatus(1) }}</div>
+      <div class="k-lbl">Pending Review</div>
+      <div class="k-progress">
+        <div class="kp-bar" [style.width]="getPercent(1)"></div>
+      </div>
+    </div>
+    <div class="kpi-card violet">
+      <div class="k-val">{{ getCountByStatus(12) }}</div>
+      <div class="k-lbl">Books Returned</div>
+      <div class="k-progress">
+        <div class="kp-bar" [style.width]="getPercent(12)"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── History Table ──────────────────── -->
+  <div class="content-card">
+    <div class="card-hdr">
+      <div class="card-title">
+        <span class="dot"></span>
+        <span>Detailed Timeline</span>
+      </div>
+      <div class="card-actions">
+        <!-- Filters could go here -->
+      </div>
+    </div>
+
+    <div class="tbl-container">
+      <table class="premium-tbl">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Book Information</th>
+            <th>Status</th>
+            <th>Request Date</th>
+            <th>Approval Date</th>
+            <th>Return Date</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let entry of history; let i = index">
+            <td class="row-num">{{ i + 1 }}</td>
+            <td>
+              <div class="book-info">
+                <div class="book-ic" [style.background-color]="getAccentColor(entry.id)">
+                  {{ entry.book?.title?.charAt(0) || 'B' }}
+                </div>
+                <div class="book-meta">
+                  <span class="title">{{ entry.book?.title }}</span>
+                  <span class="author">by {{ entry.book?.author }}</span>
+                </div>
+              </div>
+            </td>
+            <td>
+              <span class="status-badge" [ngClass]="getStatusClass(entry.status)">
+                {{ getStatusLabel(entry.status) }}
+              </span>
+            </td>
+            <td class="date-cell">{{ entry.requestedOn | date:'mediumDate' }}</td>
+            <td class="date-cell">{{ entry.approvedOn ? (entry.approvedOn | date:'mediumDate') : '—' }}</td>
+            <td class="date-cell">
+              <span *ngIf="entry.returnedOn" class="return-chip">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+                {{ entry.returnedOn | date:'mediumDate' }}
+              </span>
+              <span *ngIf="!entry.returnedOn">—</span>
+            </td>
+          </tr>
+          <tr *ngIf="history.length === 0">
+            <td colspan="6" class="empty-row">
+              <div class="empty-state">
+                <div class="empty-ic">⌛</div>
+                <p>No history found. Start your reading journey today!</p>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

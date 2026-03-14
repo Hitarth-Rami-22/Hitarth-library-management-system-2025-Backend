@@ -1,0 +1,210 @@
+<div class="page-wrap">
+
+  <!-- ── Page Header ───────────────────── -->
+  <div class="page-hdr">
+    <div class="hdr-left">
+      <div class="hdr-icon red">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="pg-title">Penalties</h1>
+        <p class="pg-sub">Outstanding dues &amp; payment history</p>
+      </div>
+    </div>
+    <button class="refresh-btn" (click)="loadPenalties()">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="23 4 23 10 17 10" />
+        <polyline points="1 20 1 14 7 14" />
+        <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+      </svg>
+      Refresh
+    </button>
+  </div>
+
+  <!-- ── Loader ───────────────────────── -->
+  <div *ngIf="isLoading" class="loader-wrap">
+    <div class="ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <p>Loading penalties…</p>
+  </div>
+
+  <div *ngIf="!isLoading">
+
+    <!-- ══════════════════════════════════
+         SECTION 1 — OUTSTANDING PENALTIES
+         ══════════════════════════════════ -->
+    <div class="section-header">
+      <div class="section-left">
+        <div class="section-dot red"></div>
+        <h2 class="section-title">Outstanding Penalties</h2>
+        <span class="badge red" *ngIf="outstandingPenalties.length > 0">{{ outstandingPenalties.length }}</span>
+      </div>
+      <div class="total-card red" *ngIf="outstandingPenalties.length > 0">
+        <span class="total-label">Total Due</span>
+        <span class="total-amount">₹{{ getTotalOutstanding() }}</span>
+      </div>
+    </div>
+
+    <!-- Outstanding table -->
+    <div *ngIf="outstandingPenalties.length > 0; else noOutstanding" class="tbl-card mb">
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Book Title</th>
+              <th>Author</th>
+              <th>Issued On</th>
+              <th>Penalty</th>
+              <th *ngIf="outstandingPenalties[0]?.student">Student Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of outstandingPenalties; let i = index" class="tbl-row outstanding-row">
+              <td class="row-idx">{{ i + 1 }}</td>
+              <td>
+                <div class="book-cell">
+                  <div class="book-ic red">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                    </svg>
+                  </div>
+                  <span class="book-title">{{ p.book.title }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="author-cell">
+                  <div class="avatar">{{ p.book.author.charAt(0).toUpperCase() }}</div>
+                  <span>{{ p.book.author }}</span>
+                </div>
+              </td>
+              <td class="date-cell">{{ p.approvedOn | date:'mediumDate' }}</td>
+              <td>
+                <span class="penalty-badge high">₹{{ p.penaltyAmount }}</span>
+              </td>
+              <td *ngIf="p.student" class="email-cell">{{ p.student.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tbl-footer">
+        <span>{{ outstandingPenalties.length }} outstanding record{{ outstandingPenalties.length !== 1 ? 's' : ''
+          }}</span>
+        <span class="footer-total red">Total Due: <strong>₹{{ getTotalOutstanding() }}</strong></span>
+      </div>
+    </div>
+
+    <ng-template #noOutstanding>
+      <div class="empty-state green mb">
+        <div class="empty-ic">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.3">
+            <polyline points="20 6 9 17 4 12" />
+          </svg>
+        </div>
+        <h3>No Outstanding Penalties 🎉</h3>
+        <p>All books are returned on time. Great job!</p>
+      </div>
+    </ng-template>
+
+
+    <!-- ══════════════════════════════════
+         SECTION 2 — PENALTY HISTORY
+         ══════════════════════════════════ -->
+    <div class="section-header">
+      <div class="section-left">
+        <div class="section-dot blue"></div>
+        <h2 class="section-title">Penalty History</h2>
+        <span class="badge blue" *ngIf="penaltyHistory.length > 0">{{ penaltyHistory.length }}</span>
+      </div>
+      <div class="total-card blue" *ngIf="penaltyHistory.length > 0">
+        <span class="total-label">Total Paid</span>
+        <span class="total-amount blue">₹{{ getTotalHistory() }}</span>
+      </div>
+    </div>
+
+    <!-- History table -->
+    <div *ngIf="penaltyHistory.length > 0; else noHistory" class="tbl-card">
+      <div class="tbl-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Book Title</th>
+              <th>Author</th>
+              <th>Returned On</th>
+              <th>Penalty Paid</th>
+              <th *ngIf="penaltyHistory[0]?.student">Student Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let p of penaltyHistory; let i = index" class="tbl-row history-row">
+              <td class="row-idx">{{ i + 1 }}</td>
+              <td>
+                <div class="book-cell">
+                  <div class="book-ic blue">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                    </svg>
+                  </div>
+                  <span class="book-title">{{ p.book.title }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="author-cell">
+                  <div class="avatar blue">{{ p.book.author.charAt(0).toUpperCase() }}</div>
+                  <span>{{ p.book.author }}</span>
+                </div>
+              </td>
+              <td class="date-cell">
+                <span class="date-chip">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                  {{ p.approvedOn | date:'mediumDate' }}
+                </span>
+              </td>
+              <td>
+                <span class="penalty-badge paid">₹{{ p.penaltyAmount }}</span>
+              </td>
+              <td *ngIf="p.student" class="email-cell">{{ p.student.email }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="tbl-footer">
+        <span>{{ penaltyHistory.length }} historical record{{ penaltyHistory.length !== 1 ? 's' : '' }}</span>
+        <span class="footer-total blue">Total Paid: <strong>₹{{ getTotalHistory() }}</strong></span>
+      </div>
+    </div>
+
+    <ng-template #noHistory>
+      <div class="empty-state grey">
+        <div class="empty-ic grey">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.3">
+            <polyline points="1 4 1 10 7 10" />
+            <path d="M3.51 15a9 9 0 1 0 .49-3.88" />
+          </svg>
+        </div>
+        <h3>No Penalty History Yet</h3>
+        <p>Cleared penalty records will appear here.</p>
+      </div>
+    </ng-template>
+
+  </div>
+</div>

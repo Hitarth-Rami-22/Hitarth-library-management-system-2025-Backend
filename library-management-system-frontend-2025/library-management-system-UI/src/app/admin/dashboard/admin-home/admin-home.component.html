@@ -1,0 +1,232 @@
+<!-- ── Hero Banner ─────────────────────── -->
+<div class="hero-banner">
+    <div class="hero-glow"></div>
+    <div class="hero-content">
+        <div>
+            <p class="hero-greeting">{{ greeting }}, <strong>{{ adminName }}</strong> 👋</p>
+            <h1 class="hero-title">Admin Control Panel</h1>
+            <p class="hero-date">{{ currentDate }}</p>
+        </div>
+        <div class="hero-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="1.5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+        </div>
+    </div>
+    <div class="hero-dots"><span *ngFor="let d of [1,2,3,4,5,6,7,8,9,10,11,12]"></span></div>
+</div>
+
+<!-- ── KPI Stat Cards ───────────────────── -->
+<div class="stats-grid">
+    <div class="stat-card indigo" (click)="navigate('/dashboard/users')" style="cursor:pointer">
+        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg></div>
+        <div class="stat-body">
+            <span class="stat-num">{{ totalUsers }}</span>
+            <span class="stat-lbl">Total Users</span>
+            <span class="stat-trend up">↑ All roles</span>
+        </div>
+    </div>
+    <div class="stat-card blue" (click)="navigate('/dashboard/books')" style="cursor:pointer">
+        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg></div>
+        <div class="stat-body">
+            <span class="stat-num">{{ totalBooks }}</span>
+            <span class="stat-lbl">Total Books</span>
+            <span class="stat-trend up">Library</span>
+        </div>
+    </div>
+    <div class="stat-card amber" (click)="navigate('/dashboard/requests')" style="cursor:pointer">
+        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+            </svg></div>
+        <div class="stat-body">
+            <span class="stat-num">{{ pendingBorrows }}</span>
+            <span class="stat-lbl">Pending Borrows</span>
+            <span class="stat-trend" [ngClass]="pendingBorrows > 0 ? 'warn' : 'up'">{{ pendingBorrows > 0 ? 'Needs
+                review' :
+                'All clear' }}</span>
+        </div>
+    </div>
+    <div class="stat-card red" (click)="navigate('/dashboard/users')" style="cursor:pointer">
+        <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07" />
+            </svg></div>
+        <div class="stat-body">
+            <span class="stat-num">{{ blockedUsers }}</span>
+            <span class="stat-lbl">Blocked Users</span>
+            <span class="stat-trend" [ngClass]="blockedUsers > 0 ? 'warn' : 'up'">{{ blockedUsers > 0 ? 'Review' : 'None
+                blocked' }}</span>
+        </div>
+    </div>
+</div>
+
+<!-- ── Content Grid: Recent + Quick Actions ── -->
+<div class="content-grid">
+
+    <!-- Recent Registrations -->
+    <div class="content-card">
+        <div class="card-hdr">
+            <div class="card-title">
+                <div class="card-ic indigo">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                        <circle cx="12" cy="7" r="4" />
+                    </svg>
+                </div>
+                Recent Registrations
+            </div>
+            <button class="see-all" (click)="navigate('/dashboard/users')">See all →</button>
+        </div>
+        <div class="recent-list" *ngIf="recentUsers.length > 0; else noRecent">
+            <div class="recent-item" *ngFor="let u of recentUsers">
+                <div class="r-avatar" [ngClass]="getRoleColor(u.userType)">{{ u.fullName.charAt(0).toUpperCase() }}
+                </div>
+                <div class="r-info">
+                    <span class="r-name">{{ u.fullName }}</span>
+                    <span class="r-email">{{ u.email }}</span>
+                </div>
+                <span class="role-pill" [ngClass]="getRoleClass(u.userType)">{{ u.userType }}</span>
+            </div>
+        </div>
+        <ng-template #noRecent>
+            <div class="card-empty">No users yet</div>
+        </ng-template>
+    </div>
+
+    <!-- Recent Borrow Activity (Parity with Librarian) -->
+    <div class="content-card">
+        <div class="card-hdr">
+            <div class="card-title">
+                <div class="card-ic blue">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2">
+                        <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+                        <path
+                            d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+                    </svg>
+                </div>
+                Recent Borrow Requests
+            </div>
+            <button class="see-all" (click)="navigate('/dashboard/requests')">See all →</button>
+        </div>
+        <div class="activity-list" *ngIf="recentRequests.length > 0; else noRequests">
+            <div class="activity-item" *ngFor="let r of recentRequests">
+                <div class="r-avatar av-blue">{{ (r.student?.fullName || '?').charAt(0).toUpperCase() }}</div>
+                <div class="r-info">
+                    <span class="r-name">{{ r.student?.fullName || 'Unknown Student' }}</span>
+                    <span class="r-email">📖 {{ r.book?.title }}</span>
+                </div>
+                <div class="r-right">
+                    <span class="mini-pill" [ngClass]="getStatusClass(r.status)">{{ getStatusText(r.status) }}</span>
+                    <span class="r-date">{{ r.requestedOn | date:'d MMM' }}</span>
+                </div>
+            </div>
+        </div>
+        <ng-template #noRequests>
+            <div class="card-empty">No borrow requests yet</div>
+        </ng-template>
+    </div>
+</div>
+
+<!-- ── Quick Actions Grid ── -->
+<div class="section-header">
+    <h2 class="section-title">Quick Actions</h2>
+    <p class="section-sub">Administrative tools and shortcuts</p>
+</div>
+
+<div class="quick-grid">
+    <div class="quick-card" *ngFor="let link of quickLinks" [ngClass]="link.color" (click)="navigate(link.route)">
+        <div class="quick-icon-wrap">
+            <svg *ngIf="link.icon==='users'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+            </svg>
+            <svg *ngIf="link.icon==='book'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+            <svg *ngIf="link.icon==='inbox'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+                <path
+                    d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+            </svg>
+            <svg *ngIf="link.icon==='alert'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+        </div>
+        <div class="quick-text">
+            <span class="quick-label">{{ link.label }}</span>
+            <span class="quick-desc">{{ link.desc }}</span>
+        </div>
+        <div class="quick-chevron">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2.5">
+                <polyline points="9 18 15 12 9 6" />
+            </svg>
+        </div>
+    </div>
+</div>
+
+<!-- ── Role Breakdown Insight Pills ── -->
+<div class="insights-grid" *ngIf="!statsLoading">
+    <div class="insight-pill indigo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+            <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+        <div><span class="insight-val">{{ totalUsers }}</span><span class="insight-lbl">Total Users</span></div>
+    </div>
+    <div class="insight-pill green">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+            <circle cx="12" cy="7" r="4" />
+        </svg>
+        <div><span class="insight-val">{{ studentCount }}</span><span class="insight-lbl">Students</span></div>
+    </div>
+    <div class="insight-pill blue">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+        </svg>
+        <div><span class="insight-val">{{ totalBooks }}</span><span class="insight-lbl">Library Books</span></div>
+    </div>
+    <div class="insight-pill amber">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.2">
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        <div><span class="insight-val">₹{{ outstandingPenalty }}</span><span class="insight-lbl">Penalties</span></div>
+    </div>
+</div>
+
+<div style="height:2rem"></div>

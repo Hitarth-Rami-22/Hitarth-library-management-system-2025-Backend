@@ -1,0 +1,86 @@
+@import 'src/styles/lms-variables';
+
+.stat-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid $border;
+    padding: 1.5rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+
+    &:hover {
+        box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+        border-color: rgba($indigo, 0.3);
+    }
+
+    .card-label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: $sub;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 0.75rem;
+    }
+
+    .card-bottom {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+
+    .card-value {
+        font-size: 2.25rem;
+        font-weight: 800;
+        color: #0f172a;
+        line-height: 1;
+    }
+
+    .card-trend {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        padding: 0.25rem 0.5rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 700;
+
+        svg {
+            width: 12px;
+            height: 12px;
+        }
+
+        &.up {
+            background: $green-lt;
+            color: darken($green, 15%);
+        }
+
+        &.down {
+            background: $red-lt;
+            color: darken($red, 15%);
+        }
+
+        &.neutral {
+            background: #f1f5f9;
+            color: $sub;
+        }
+    }
+
+    /* Color Variations */
+    &.indigo .card-label {
+        color: $indigo;
+    }
+
+    &.green .card-label {
+        color: $green;
+    }
+
+    &.amber .card-label {
+        color: $amber;
+    }
+
+    &.red .card-label {
+        color: $red;
+    }
+}

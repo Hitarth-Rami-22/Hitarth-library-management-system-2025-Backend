@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+$font: 'Inter', sans-serif;
+$indigo: #6366f1;
+$indigo-dark: #4f46e5;
+$indigo-mid: #818cf8;
+$indigo-lt: #eef2ff;
+$red: #ef4444;
+$amber: #f59e0b;
+$amber-lt: #fef3c7;
+$sb: #0f172a;
+$sb-hover: rgba(255, 255, 255, .06);
+$sb-active: #1e293b;
+$sb-border: rgba(255, 255, 255, .08);
+$sb-text: rgba(255, 255, 255, .7);
+$sb-muted: rgba(255, 255, 255, .35);
+$text: #1e293b;
+$bg: #f8fafc;
+$border: #e2e8f0;
+$card: #fff;
+$r-lg: 14px;
+$r-md: 10px;
+$r-sm: 6px;
+$r-pill: 50px;
+$ease: all .2s ease;
+
+/* ── Root Layout ─────────────────────── */
+.admin-wrap {
+  display: flex;
+  min-height: 100vh;
+  font-family: $font;
+  background: $bg;
+  color: $text;
+  position: relative;
+}
+
+/* ═══════════════════════════════════════
+   SIDEBAR
+═══════════════════════════════════════ */
+.sidebar {
+  width: 252px;
+  min-height: 100vh;
+  background: $sb;
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  flex-shrink: 0;
+  overflow-y: auto;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  padding: 1.5rem 1.4rem 1rem;
+  border-bottom: 1px solid $sb-border;
+
+  .brand-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, $indigo, $indigo-mid);
+    border-radius: $r-md;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+    }
+  }
+
+  .brand-name {
+    display: block;
+    font-size: .95rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1.1;
+  }
+
+  .brand-sub {
+    display: block;
+    font-size: .68rem;
+    color: $sb-muted;
+    margin-top: .15rem;
+  }
+}
+
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .9rem 1.4rem;
+  border-bottom: 1px solid $sb-border;
+  background: rgba(255, 255, 255, .03);
+
+  .chip-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, $indigo, $indigo-mid);
+    color: #fff;
+    font-size: .85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .chip-name {
+    display: block;
+    font-size: .85rem;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.1;
+  }
+
+  .chip-role {
+    display: block;
+    font-size: .68rem;
+    color: $sb-muted;
+  }
+}
+
+.nav-section {
+  padding: .6rem 0;
+
+  +.nav-section {
+    border-top: 1px solid $sb-border;
+  }
+}
+
+.nav-label {
+  display: block;
+  font-size: .62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: $sb-muted;
+  padding: .4rem 1.4rem;
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .7rem 1.4rem;
+  color: $sb-text;
+  font-size: .875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: $ease;
+  text-decoration: none;
+
+  .nav-ic {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+    }
+  }
+
+  .nav-badge {
+    margin-left: auto;
+    font-size: .68rem;
+    font-weight: 700;
+    padding: .12rem .5rem;
+    border-radius: $r-pill;
+    background: rgba($indigo, .3);
+    color: lighten($indigo, 30%);
+
+    &.warn {
+      background: rgba($amber, .3);
+      color: lighten($amber, 20%);
+    }
+  }
+
+  &:hover {
+    background: $sb-hover;
+    color: #fff;
+  }
+
+  &.active {
+    background: $sb-active;
+    color: #fff;
+    border-left: 3px solid $indigo;
+    padding-left: calc(1.4rem - 3px);
+
+    .nav-ic svg {
+      stroke: $indigo-mid;
+    }
+  }
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: 1rem 1.2rem;
+  border-top: 1px solid $sb-border;
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  width: 100%;
+  padding: .75rem 1rem;
+  background: rgba($red, .12);
+  border: none;
+  border-radius: $r-md;
+  color: lighten($red, 15%);
+  font-family: $font;
+  font-size: .88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $ease;
+
+  svg {
+    width: 17px;
+    height: 17px;
+    stroke: currentColor;
+  }
+
+  &:hover {
+    background: rgba($red, .22);
+  }
+}
+
+/* ── Main Content Area ───────────────── */
+.main {
+  flex: 1;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+@media(max-width:768px) {
+  .sidebar {
+    display: none;
+  }
+}

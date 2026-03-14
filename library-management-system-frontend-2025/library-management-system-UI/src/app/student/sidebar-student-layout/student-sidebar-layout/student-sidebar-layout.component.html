@@ -1,0 +1,128 @@
+<div class="layout-container" [class.menu-open]="isMenuOpen">
+  <!-- Mobile Top Bar -->
+  <header class="mobile-hdr">
+    <button class="menu-trigger" (click)="toggleMenu()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="18" x2="21" y2="18" />
+      </svg>
+    </button>
+    <div class="m-brand">LMS Student</div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" [class.open]="isMenuOpen">
+    <div class="brand">
+      <div class="brand-ic">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+        </svg>
+      </div>
+      <span>LMS Portal</span>
+    </div>
+
+    <nav class="nav">
+      <ul>
+        <li class="nav-label">Main Menu</li>
+        <li>
+          <a class="nav-item" routerLink="/student-dashboard/home" routerLinkActive="active" (click)="closeMenu()">
+            <span class="nav-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+            </span>
+            <span>Dashboard Home</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" routerLink="/student-dashboard/browse" routerLinkActive="active" (click)="closeMenu()">
+            <span class="nav-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </span>
+            <span>Browse Library</span>
+          </a>
+        </li>
+
+        <li class="nav-label">My Activities</li>
+        <li>
+          <a class="nav-item" routerLink="/student-dashboard/borrowed-books" routerLinkActive="active"
+            (click)="closeMenu()">
+            <span class="nav-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+              </svg>
+            </span>
+            <span>My Borrowed Books</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" routerLink="/student-dashboard/history" routerLinkActive="active" (click)="closeMenu()">
+            <span class="nav-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </span>
+            <span>Request History</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" routerLink="/student-dashboard/notifications" routerLinkActive="active"
+            (click)="closeMenu()">
+            <span class="nav-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+                <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+              </svg>
+            </span>
+            <span>Notifications</span>
+          </a>
+        </li>
+        <li>
+          <a class="nav-item" routerLink="/student-dashboard/penalties" routerLinkActive="active" (click)="closeMenu()">
+            <span class="nav-ic">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+            </span>
+            <span>Penalties</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="user-chip">
+      <div class="u-info">
+        <div class="u-avatar">{{ studentName.charAt(0).toUpperCase() }}</div>
+        <div class="u-meta">
+          <span class="u-name">{{ studentName }}</span>
+          <span class="u-role">Student</span>
+        </div>
+      </div>
+      <button class="btn-logout" (click)="logout()" title="Logout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- Overlay -->
+  <div class="overlay" (click)="closeMenu()"></div>
+
+  <!-- Main Content Area -->
+  <main class="main">
+    <div class="top-nav-spacer"></div>
+    <router-outlet></router-outlet>
+  </main>
+</div>

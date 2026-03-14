@@ -1,0 +1,12 @@
+<p>wishlist works!</p>
+<h2>📌 My Wishlist</h2>
+
+<input type="text" [(ngModel)]="bookIdInput" placeholder="Enter Book ID">
+<button (click)="addToWishlist()">Add</button>
+
+<ul>
+  <li *ngFor="let w of wishlist">
+    {{ w.book?.title || 'Unknown Book' }}
+    <button (click)="removeFromWishlist(w.id)">❌</button>
+  </li>
+</ul>

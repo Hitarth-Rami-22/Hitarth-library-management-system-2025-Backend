@@ -1,0 +1,481 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+// ── Design tokens ────────────────────────────────────
+$font: 'Inter', sans-serif;
+$sidebar-w: 252px;
+$sb-bg: #0f172a;
+$sb-hover: rgba(255, 255, 255, .07);
+$sb-active: rgba(99, 102, 241, .18);
+$accent: #6366f1;
+$accent-lt: #818cf8;
+$text-hi: #f1f5f9;
+$text-muted: #94a3b8;
+$border-sb: rgba(255, 255, 255, .08);
+$red: #ef4444;
+$r: 10px;
+$ease: all .2s ease;
+
+// ── Root layout ──────────────────────────────────────
+.lib-wrap {
+  display: flex;
+  min-height: 100vh;
+  font-family: $font;
+  background: #f8fafc;
+}
+
+// ── Mobile top bar (hidden on desktop) ───────────────
+.mobile-bar {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 58px;
+  background: $sb-bg;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.2rem;
+  z-index: 300;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, .3);
+
+  .mobile-brand {
+    display: flex;
+    align-items: center;
+    gap: .7rem;
+
+    .brand-icon {
+      width: 32px;
+      height: 32px;
+      background: linear-gradient(135deg, $accent, $accent-lt);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 16px;
+        height: 16px;
+        stroke: #fff;
+      }
+    }
+
+    .brand-name {
+      font-size: .92rem;
+      font-weight: 700;
+      color: $text-hi;
+    }
+  }
+}
+
+// ── Hamburger button ──────────────────────────────────
+.burger {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 8px;
+  transition: $ease;
+
+  span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: $text-muted;
+    border-radius: 2px;
+    transition: $ease;
+    transform-origin: center;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, .08);
+
+    span {
+      background: $text-hi;
+    }
+  }
+
+  &.open {
+    span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+
+    span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+
+    span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+}
+
+// ── Mobile overlay ────────────────────────────────────
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .5);
+  z-index: 299;
+  backdrop-filter: blur(2px);
+  animation: fadeIn .2s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0
+  }
+
+  to {
+    opacity: 1
+  }
+}
+
+// ── Sidebar ───────────────────────────────────────────
+.sidebar {
+  width: $sidebar-w;
+  min-width: $sidebar-w;
+  background: $sb-bg;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-shadow: 4px 0 24px rgba(0, 0, 0, .2);
+  flex-shrink: 0;
+  z-index: 300;
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, .12);
+    border-radius: 2px;
+  }
+}
+
+// ── Brand block ───────────────────────────────────────
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: .85rem;
+  padding: 1.4rem 1.2rem 1rem;
+  flex-shrink: 0;
+
+  .brand-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, $accent, $accent-lt);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 4px 14px rgba($accent, .4);
+
+    svg {
+      width: 20px;
+      height: 20px;
+      stroke: #fff;
+    }
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .brand-name {
+    font-size: .95rem;
+    font-weight: 700;
+    color: $text-hi;
+    letter-spacing: -.2px;
+  }
+
+  .brand-role {
+    font-size: .68rem;
+    font-weight: 500;
+    color: $text-muted;
+    margin-top: .2rem;
+    text-transform: uppercase;
+    letter-spacing: .5px;
+  }
+}
+
+// ── User chip ─────────────────────────────────────────
+.user-chip {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .75rem 1.2rem;
+  margin: 0 .6rem .4rem;
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid $border-sb;
+  border-radius: $r;
+
+  .uc-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, $accent, $accent-lt);
+    color: #fff;
+    font-size: .88rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .uc-info {
+    display: flex;
+    flex-direction: column;
+    gap: .05rem;
+    min-width: 0;
+  }
+
+  .uc-name {
+    font-size: .84rem;
+    font-weight: 600;
+    color: $text-hi;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .uc-role {
+    font-size: .68rem;
+    font-weight: 500;
+    color: $text-muted;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+}
+
+// ── Divider ───────────────────────────────────────────
+.sidebar-divider {
+  height: 1px;
+  background: $border-sb;
+  margin: .4rem 1.2rem;
+  flex-shrink: 0;
+}
+
+// ── Navigation ────────────────────────────────────────
+.sidebar-nav {
+  flex: 1;
+  padding: .4rem 0;
+}
+
+.nav-section-label {
+  display: block;
+  font-size: .62rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+  color: $text-muted;
+  padding: .75rem 1.3rem .3rem;
+}
+
+.sidebar-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0 .6rem;
+
+  li {
+    margin-bottom: .1rem;
+  }
+
+  a {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    padding: .65rem .85rem;
+    border-radius: $r;
+    text-decoration: none;
+    color: $text-muted;
+    font-size: .86rem;
+    font-weight: 500;
+    transition: $ease;
+    position: relative;
+
+    .nav-icon {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, .05);
+      flex-shrink: 0;
+      transition: $ease;
+
+      svg {
+        width: 15px;
+        height: 15px;
+        stroke: $text-muted;
+        transition: $ease;
+      }
+    }
+
+    .nav-label {
+      white-space: nowrap;
+    }
+
+    &:hover {
+      background: $sb-hover;
+      color: $text-hi;
+
+      .nav-icon {
+        background: rgba($accent, .2);
+
+        svg {
+          stroke: $accent-lt;
+        }
+      }
+    }
+
+    &.active {
+      background: $sb-active;
+      color: $text-hi;
+      font-weight: 600;
+
+      .nav-icon {
+        background: $accent;
+        box-shadow: 0 3px 10px rgba($accent, .45);
+
+        svg {
+          stroke: #fff;
+        }
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: -.6rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 60%;
+        background: $accent;
+        border-radius: 0 3px 3px 0;
+      }
+    }
+  }
+}
+
+// ── Footer / Logout ───────────────────────────────────
+.sidebar-footer {
+  padding: .4rem 0 .8rem;
+  flex-shrink: 0;
+
+  .sidebar-divider {
+    margin-bottom: .7rem;
+  }
+}
+
+.logout-btn {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  width: calc(100% - 1.2rem);
+  margin: 0 .6rem;
+  padding: .65rem .85rem;
+  border: none;
+  border-radius: $r;
+  background: transparent;
+  color: $text-muted;
+  font-family: $font;
+  font-size: .86rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: $ease;
+  text-align: left;
+
+  .nav-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 7px;
+    background: rgba(255, 255, 255, .05);
+    flex-shrink: 0;
+    transition: $ease;
+
+    svg {
+      width: 15px;
+      height: 15px;
+      stroke: $text-muted;
+      transition: $ease;
+    }
+  }
+
+  &:hover {
+    background: rgba($red, .12);
+    color: #fca5a5;
+
+    .nav-icon {
+      background: rgba($red, .2);
+
+      svg {
+        stroke: #f87171;
+      }
+    }
+  }
+}
+
+// ── Main content area ─────────────────────────────────
+.content {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: #f8fafc;
+}
+
+// ── Responsive ────────────────────────────────────────
+@media (max-width: 768px) {
+
+  .lib-wrap {
+    display: block;
+    padding-top: 58px;
+  }
+
+  .mobile-bar {
+    display: flex;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: 58px;
+    left: 0;
+    height: calc(100vh - 58px);
+    transform: translateX(-100%);
+    transition: transform .28s cubic-bezier(.4, 0, .2, 1);
+    z-index: 300;
+
+    &.open {
+      transform: translateX(0);
+    }
+  }
+
+  .content {
+    min-height: calc(100vh - 58px);
+    overflow-y: auto;
+  }
+}

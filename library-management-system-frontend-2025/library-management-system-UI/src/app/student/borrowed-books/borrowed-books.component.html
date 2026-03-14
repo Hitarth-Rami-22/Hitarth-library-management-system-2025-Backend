@@ -1,0 +1,44 @@
+<div class="page-wrap">
+    <app-page-header title="Currently Borrowed"
+        subtitle="Track your active loans, due dates, and initiate returns when you're finished.">
+    </app-page-header>
+
+    <div class="content-body">
+        <app-data-table [headers]="['Book', 'Borrow Date', 'Due Date', 'Status', 'Actions']" [loading]="isLoading"
+            [emptyMessage]="'You don\'t have any books currently borrowed.'">
+
+            <tr *ngFor="let b of borrowedBooks">
+                <td>
+                    <div class="book-info">
+                        <div class="book-ic" [style.background-color]="getAccentColor(b.id)">
+                            {{ b.book?.title?.charAt(0) || 'B' }}
+                        </div>
+                        <div class="book-meta">
+                            <span class="title">{{ b.book?.title }}</span>
+                            <span class="author">by {{ b.book?.author }}</span>
+                        </div>
+                    </div>
+                </td>
+                <td data-label="Borrow Date">
+                    <span class="date-text">{{ b.approvedOn | date:'mediumDate' }}</span>
+                </td>
+                <td data-label="Due Date">
+                    <span class="date-text highlighted">{{ b.dueDate | date:'mediumDate' }}</span>
+                </td>
+                <td data-label="Status">
+                    <app-status-badge label="Active Loan" type="success"></app-status-badge>
+                </td>
+                <td data-label="Actions">
+                    <button class="btn-return" (click)="returnBook(b.id)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                        </svg>
+                        <span>Return Book</span>
+                    </button>
+                </td>
+            </tr>
+        </app-data-table>
+    </div>
+</div>

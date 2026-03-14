@@ -1,0 +1,520 @@
+/* =========================================
+   BOOK MANAGEMENT – PRO UI (matches Borrow Requests style)
+   ========================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+$primary: #4f46e5;
+$primary-lt: #eef2ff;
+$green: #10b981;
+$green-lt: #d1fae5;
+$red: #ef4444;
+$red-lt: #fee2e2;
+$amber: #f59e0b;
+$amber-lt: #fef3c7;
+$blue: #3b82f6;
+$blue-lt: #dbeafe;
+$text-main: #1e293b;
+$text-sub: #64748b;
+$border: #e2e8f0;
+$bg-page: #f8fafc;
+$white: #ffffff;
+$radius-lg: 14px;
+$radius-md: 10px;
+$radius-sm: 6px;
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, .06), 0 1px 2px rgba(0, 0, 0, .04);
+$shadow-md: 0 4px 24px rgba(0, 0, 0, .07);
+$transition: all .2s ease;
+
+/* ── Base ───────────────────────────── */
+.books-container {
+  font-family: 'Inter', sans-serif;
+  padding: 2rem 2.5rem;
+  max-width: 1300px;
+  margin: 0 auto;
+  color: $text-main;
+}
+
+/* ── Page Header ─────────────────────── */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.header-icon {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, $primary, #818cf8);
+  border-radius: $radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 6px 20px rgba(79, 70, 229, .28);
+  flex-shrink: 0;
+
+  svg {
+    width: 26px;
+    height: 26px;
+    stroke: #fff;
+  }
+}
+
+.page-title {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: $text-main;
+  margin: 0 0 .15rem;
+  letter-spacing: -.3px;
+}
+
+.page-subtitle {
+  font-size: .85rem;
+  color: $text-sub;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+}
+
+.refresh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  padding: .65rem 1.15rem;
+  background: $white;
+  border: 1.5px solid $border;
+  border-radius: 50px;
+  font-family: 'Inter', sans-serif;
+  font-size: .875rem;
+  font-weight: 500;
+  color: $text-main;
+  cursor: pointer;
+  transition: $transition;
+
+  svg {
+    width: 15px;
+    height: 15px;
+    stroke: $text-sub;
+    transition: transform .4s ease;
+  }
+
+  &:hover {
+    background: $primary-lt;
+    border-color: $primary;
+    color: $primary;
+
+    svg {
+      stroke: $primary;
+      transform: rotate(180deg);
+    }
+  }
+}
+
+/* ── Form Card ───────────────────────── */
+.form-card {
+  background: $white;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-md;
+  border: 1.5px solid $border;
+  margin-bottom: 1.8rem;
+  overflow: hidden;
+}
+
+.form-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: .9rem 1.4rem;
+  border-bottom: 1.5px solid $border;
+  background: $bg-page;
+}
+
+.form-card-title {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .9rem;
+  font-weight: 600;
+  color: $text-main;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    stroke: $primary;
+  }
+}
+
+.editing-badge {
+  font-size: .72rem;
+  font-weight: 600;
+  background: $amber-lt;
+  color: darken($amber, 20%);
+  padding: .2rem .65rem;
+  border-radius: 50px;
+  border: 1px solid rgba($amber, .3);
+}
+
+/* Form layout */
+.book-form {
+  padding: 1.4rem;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+
+  label {
+    font-size: .78rem;
+    font-weight: 600;
+    color: $text-sub;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+
+  input {
+    padding: .65rem .9rem;
+    border: 1.5px solid $border;
+    border-radius: $radius-sm;
+    font-family: 'Inter', sans-serif;
+    font-size: .875rem;
+    color: $text-main;
+    background: $white;
+    transition: $transition;
+
+    &::placeholder {
+      color: #a0aec0;
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $primary;
+      box-shadow: 0 0 0 3px rgba($primary, .1);
+    }
+
+    &.invalid {
+      border-color: $red;
+      box-shadow: 0 0 0 3px rgba($red, .1);
+    }
+  }
+}
+
+.error-msg {
+  font-size: .75rem;
+  color: $red;
+  margin-top: .1rem;
+}
+
+.form-actions {
+  display: flex;
+  gap: .7rem;
+  align-items: center;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .65rem 1.3rem;
+  background: $primary;
+  color: #fff;
+  border: none;
+  border-radius: $radius-sm;
+  font-family: 'Inter', sans-serif;
+  font-size: .875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $transition;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  &:hover {
+    background: darken($primary, 8%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba($primary, .4);
+  }
+}
+
+.btn-cancel {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  padding: .65rem 1.1rem;
+  background: $white;
+  color: $text-sub;
+  border: 1.5px solid $border;
+  border-radius: $radius-sm;
+  font-family: 'Inter', sans-serif;
+  font-size: .875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: $transition;
+
+  svg {
+    width: 13px;
+    height: 13px;
+  }
+
+  &:hover {
+    background: $red-lt;
+    border-color: $red;
+    color: $red;
+
+    svg {
+      stroke: $red;
+    }
+  }
+}
+
+/* ── Table Card ──────────────────────── */
+.table-card {
+  background: $white;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-md;
+  border: 1.5px solid $border;
+  overflow: hidden;
+}
+
+.table-info-bar {
+  padding: .85rem 1.4rem;
+  border-bottom: 1px solid $border;
+  background: $bg-page;
+
+  .result-count {
+    font-size: .82rem;
+    color: $text-sub;
+
+    strong {
+      color: $text-main;
+    }
+  }
+}
+
+.table-scroll {
+  overflow-x: auto;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead tr {
+  background: $bg-page;
+}
+
+th {
+  padding: .9rem 1.2rem;
+  text-align: left;
+  font-size: .78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .55px;
+  color: $text-sub;
+  border-bottom: 1.5px solid $border;
+  white-space: nowrap;
+}
+
+td {
+  padding: .85rem 1.2rem;
+  font-size: .875rem;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: middle;
+}
+
+.table-row {
+  transition: background .15s ease;
+
+  &:hover {
+    background: #fafbff;
+  }
+
+  &:last-child td {
+    border-bottom: none;
+  }
+}
+
+.row-index {
+  width: 40px;
+  color: $text-sub;
+  font-size: .8rem;
+  font-weight: 500;
+}
+
+/* Book cell */
+.book-cell {
+  display: flex;
+  align-items: center;
+  gap: .7rem;
+}
+
+.book-icon {
+  width: 34px;
+  height: 34px;
+  background: $primary-lt;
+  border-radius: $radius-sm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    stroke: $primary;
+  }
+}
+
+.book-title-text {
+  font-weight: 500;
+  color: $text-main;
+  max-width: 260px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Author cell */
+.author-cell {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+}
+
+.avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, $primary, #818cf8);
+  color: #fff;
+  font-size: .75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ISBN */
+.isbn-cell {
+  font-family: 'Courier New', monospace;
+  font-size: .82rem;
+  color: $text-sub;
+}
+
+/* Quantity badge */
+.qty-badge {
+  display: inline-block;
+  padding: .25rem .7rem;
+  border-radius: 50px;
+  font-size: .8rem;
+  font-weight: 700;
+
+  &.qty-ok {
+    background: $green-lt;
+    color: darken($green, 20%);
+  }
+
+  &.qty-low {
+    background: $red-lt;
+    color: darken($red, 15%);
+  }
+}
+
+/* Action buttons */
+.actions-cell {
+  display: flex;
+  gap: .45rem;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  padding: .42rem .85rem;
+  border: 1.5px solid transparent;
+  border-radius: $radius-sm;
+  font-family: 'Inter', sans-serif;
+  font-size: .8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: $transition;
+  white-space: nowrap;
+
+  svg {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+  }
+
+  &.edit {
+    background: $blue-lt;
+    color: darken($blue, 15%);
+    border-color: rgba($blue, .3);
+
+    &:hover {
+      background: $blue;
+      color: #fff;
+      border-color: $blue;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($blue, .35);
+    }
+  }
+
+  &.delete {
+    background: $red-lt;
+    color: darken($red, 15%);
+    border-color: rgba($red, .3);
+
+    &:hover {
+      background: $red;
+      color: #fff;
+      border-color: $red;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba($red, .35);
+    }
+  }
+}
+
+/* ── Responsive ──────────────────────── */
+@media (max-width: 768px) {
+  .books-container {
+    padding: 1.2rem 1rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .actions-cell {
+    flex-wrap: wrap;
+  }
+}

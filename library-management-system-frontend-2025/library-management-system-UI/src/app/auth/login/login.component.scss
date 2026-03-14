@@ -1,0 +1,412 @@
+@import 'src/styles/lms-variables';
+
+.auth-container {
+  min-height: 100vh;
+  display: flex;
+  background: #fff;
+  font-family: $font;
+  overflow: hidden;
+}
+
+.auth-split {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  width: 100%;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Visual Side ───────────────────── */
+.auth-visual {
+  position: relative;
+  background: $sidebar-bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+  overflow: hidden;
+  color: #fff;
+
+  @media (max-width: 1024px) {
+    display: none;
+  }
+
+  .visual-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+
+    .orb {
+      position: absolute;
+      filter: blur(80px);
+      border-radius: 50%;
+      opacity: 0.5;
+      animation: drift 20s infinite alternate ease-in-out;
+    }
+
+    .orb-1 {
+      width: 400px;
+      height: 400px;
+      background: $indigo;
+      top: -100px;
+      left: -100px;
+    }
+
+    .orb-2 {
+      width: 500px;
+      height: 500px;
+      background: $violet;
+      bottom: -150px;
+      right: -100px;
+      animation-delay: -5s;
+    }
+
+    .orb-3 {
+      width: 300px;
+      height: 300px;
+      background: $blue;
+      top: 40%;
+      right: 10%;
+      animation-delay: -10s;
+    }
+  }
+
+  .visual-content {
+    position: relative;
+    z-index: 2;
+    max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .v-brand {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+
+    .v-logo {
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
+  }
+
+  .v-text {
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+      letter-spacing: -2px;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.6;
+    }
+  }
+
+  .v-users {
+    .u-avatars {
+      display: flex;
+      margin-bottom: 1rem;
+
+      .u-av {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: $indigo;
+        border: 2px solid $sidebar-bg;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        font-weight: 700;
+        margin-right: -10px;
+
+        &.more {
+          background: #333;
+        }
+      }
+    }
+
+    p {
+      font-size: 0.95rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+/* ── Form Side ─────────────────────── */
+.auth-form-side {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  background: #fff;
+
+  .form-box {
+    width: 100%;
+    max-width: 420px;
+    padding: 2.5rem;
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  .f-hdr {
+    margin-bottom: 2.5rem;
+
+    h2 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: $text-900;
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    p {
+      color: $text-500;
+      font-size: 1rem;
+    }
+  }
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+
+  .f-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: $text-700;
+    }
+
+    .l-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      .forgot {
+        font-size: 0.85rem;
+        color: $indigo;
+        text-decoration: none;
+        font-weight: 600;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .in-wrap {
+      position: relative;
+
+      svg {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        color: $text-400;
+        transition: $ease;
+      }
+
+      input {
+        width: 100%;
+        padding: 0.85rem 1rem 0.85rem 3rem;
+        border: 1.5px solid $border;
+        border-radius: $r-md;
+        font-family: $font;
+        font-size: 1rem;
+        transition: $ease;
+        color: $text-900;
+        background: #fff;
+
+        &::placeholder {
+          color: $text-300;
+        }
+
+        &:focus {
+          outline: none;
+          border-color: $indigo;
+          box-shadow: 0 0 0 4px rgba($indigo, 0.15);
+          transform: translateY(-1px);
+
+          &+svg {
+            color: $indigo;
+          }
+        }
+      }
+
+      .pass-toggle {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        padding: 0;
+        color: $text-400;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: $ease;
+
+        &:hover {
+          color: $indigo;
+          transform: translateY(-50%) scale(1.1);
+        }
+
+        svg {
+          position: static;
+          transform: none;
+          width: 20px;
+          height: 20px;
+          color: inherit;
+        }
+      }
+    }
+  }
+}
+
+.f-err,
+.f-success {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: $r-md;
+  font-size: 0.9rem;
+  font-weight: 600;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.f-err {
+  background: $red-lt;
+  color: $red-dark;
+}
+
+.f-success {
+  background: $green-lt;
+  color: $green-dark;
+}
+
+.btn-primary {
+  width: 100%;
+  padding: 1rem;
+  background: linear-gradient(to bottom, $indigo-mid, $indigo);
+  color: #fff;
+  border: none;
+  border-radius: $r-md;
+  font-family: $font;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  transition: $ease;
+  box-shadow: 0 4px 12px rgba($indigo, 0.25);
+
+  svg {
+    width: 18px;
+    height: 18px;
+    transition: $ease;
+  }
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba($indigo, 0.35);
+
+    svg {
+      transform: translateX(4px);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: $text-300;
+    box-shadow: none;
+  }
+}
+
+.f-footer {
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: $text-500;
+
+  a {
+    color: $indigo;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/* ── Animations ───────────────────── */
+@keyframes drift {
+  from {
+    transform: translate(0, 0);
+  }
+
+  to {
+    transform: translate(30px, 30px) rotate(5deg);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

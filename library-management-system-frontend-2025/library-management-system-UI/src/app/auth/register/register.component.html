@@ -1,0 +1,139 @@
+<!-- <p>register works!</p>
+<h2>Register</h2>
+<form (ngSubmit)="register()">
+  <input [(ngModel)]="form.fullName" name="fullName" placeholder="Full Name" required />
+  <input [(ngModel)]="form.email" name="email" placeholder="Email" type="email" required />
+  <input [(ngModel)]="form.password" name="password" type="password" placeholder="Password" required />
+  <select [(ngModel)]="form.userType" name="userType">
+    <option value="Student">Student</option>
+    <option value="Librarian">Librarian</option>
+    <option value="Admin">Admin</option>
+  </select>
+  <button type="submit">Register</button>
+</form>
+<p *ngIf="message">{{ message }}</p> -->
+<div class="auth-container">
+  <div class="auth-split">
+    <!-- Visual Side -->
+    <div class="auth-visual">
+      <div class="visual-bg">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+      </div>
+
+      <div class="visual-content">
+        <div class="v-brand">
+          <div class="v-logo">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+            </svg>
+          </div>
+          <span>LMS Portal</span>
+        </div>
+
+        <div class="v-text">
+          <h1>Start Your Library Journey Today.</h1>
+          <p>Join our community and explore thousands of resources with a seamless, modern experience.</p>
+        </div>
+
+        <div class="v-stat">
+          <div class="s-card">
+            <span class="s-val">10k+</span>
+            <span class="s-lbl">Digital Books</span>
+          </div>
+          <div class="s-card">
+            <span class="s-val">500+</span>
+            <span class="s-lbl">Daily Readers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Side -->
+    <div class="auth-form-side">
+      <div class="form-box">
+        <div class="f-hdr anim-stagger">
+          <h2>Create account</h2>
+          <p>Join the best library management portal.</p>
+        </div>
+
+        <form #registerForm="ngForm" (ngSubmit)="register()" class="auth-form">
+          <div class="f-groups">
+            <div class="input-group anim-stagger">
+              <label>Full Name</label>
+              <div class="in-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <input type="text" name="fullName" [(ngModel)]="form.fullName" placeholder="John Doe" required />
+              </div>
+            </div>
+
+            <div class="input-group anim-stagger">
+              <label>Email Address</label>
+              <div class="in-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                  <polyline points="22,6 12,13 2,6" />
+                </svg>
+                <input type="email" name="email" [(ngModel)]="form.email" placeholder="name@example.com" required />
+              </div>
+            </div>
+
+            <div class="input-group anim-stagger">
+              <label>Password</label>
+              <div class="in-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+                  <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                </svg>
+                <input [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="form.password"
+                  placeholder="Min. 6 characters" required minlength="6" />
+                <button type="button" class="pass-toggle" (click)="showPassword = !showPassword">
+                  <svg *ngIf="!showPassword" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                  </svg>
+                  <svg *ngIf="showPassword" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path
+                      d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" />
+                    <line x1="1" y1="1" x2="23" y2="23" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div class="input-group anim-stagger">
+              <label>I am a...</label>
+              <div class="in-wrap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path
+                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+                <select name="userType" [(ngModel)]="form.userType" required>
+                  <option value="Student">Student</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+
+          <button type="submit" class="btn-primary anim-stagger" [disabled]="!registerForm.valid">
+            <span>Create Account</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </button>
+        </form>
+
+        <div class="f-footer anim-stagger">
+          Already have an account? <a routerLink="/login">Sign in</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

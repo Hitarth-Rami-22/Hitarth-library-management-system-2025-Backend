@@ -1,0 +1,18 @@
+<div class="stat-card" [ngClass]="color">
+    <div class="card-inner">
+        <div class="card-label">{{ label }}</div>
+        <div class="card-bottom">
+            <div class="card-value">{{ value }}</div>
+            <div class="card-trend" *ngIf="trend" [ngClass]="trendType">
+                <svg *ngIf="trendType === 'up'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                    <polyline points="18 15 12 9 6 15"></polyline>
+                </svg>
+                <svg *ngIf="trendType === 'down'" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="3">
+                    <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+                <span>{{ trend }}</span>
+            </div>
+        </div>
+    </div>
+</div>

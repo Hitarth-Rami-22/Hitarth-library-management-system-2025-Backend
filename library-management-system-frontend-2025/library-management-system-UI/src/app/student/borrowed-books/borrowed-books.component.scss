@@ -1,0 +1,98 @@
+@import 'src/styles/lms-variables';
+
+.page-wrap {
+    padding: 2rem 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.content-body {
+    margin-top: 1rem;
+}
+
+/* ── Table Cells ───────────────────── */
+.book-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.book-ic {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: #fff;
+    font-size: 1rem;
+    flex-shrink: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.book-meta {
+    display: flex;
+    flex-direction: column;
+
+    .title {
+        font-weight: 700;
+        color: #0f172a;
+        font-size: 0.95rem;
+    }
+
+    .author {
+        font-size: 0.8rem;
+        color: $sub;
+    }
+}
+
+.date-text {
+    color: $sub;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+
+    &.highlighted {
+        color: #0f172a;
+        font-weight: 700;
+    }
+}
+
+/* ── Action Button ──────────────────── */
+.btn-return {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1rem;
+    background: #f8fafc;
+    border: 1px solid $border;
+    border-radius: 8px;
+    color: $indigo;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    svg {
+        width: 16px;
+        height: 16px;
+        transition: transform 0.3s ease;
+    }
+
+    &:hover {
+        background: $indigo;
+        color: #fff;
+        border-color: $indigo;
+        box-shadow: 0 4px 12px rgba($indigo, 0.2);
+
+        svg {
+            transform: translateY(-3px);
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .page-wrap {
+        padding: 1.5rem;
+    }
+}

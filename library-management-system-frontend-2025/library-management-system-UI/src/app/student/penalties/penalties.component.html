@@ -1,0 +1,55 @@
+<div class="page-wrap">
+    <app-page-header title="Penalties & Fines"
+        subtitle="View details of overdue books and manage your outstanding library penalties.">
+    </app-page-header>
+
+    <!-- Summary Statistics -->
+    <div class="summary-section">
+        <app-stat-card label="Total Outstanding" [value]="getTotalOutstanding() | currency:'INR':'symbol':'1.0-2'"
+            color="red" trend="Across {{ outstandingPenalties.length }} items" trendType="neutral">
+        </app-stat-card>
+    </div>
+
+    <div class="content-body">
+        <!-- Outstanding Section -->
+        <section class="section-card">
+            <h2 class="alert">Outstanding Penalties</h2>
+
+            <div *ngIf="!isLoading && outstandingPenalties.length === 0" class="empty-state">
+                <div class="empty-icon">🎉</div>
+                <h3>You're all clear!</h3>
+                <p>No outstanding penalties found. Keep up the good work returning books on time.</p>
+            </div>
+
+            <app-data-table *ngIf="outstandingPenalties.length > 0"
+                [headers]="['Book', 'Due Date', 'Fine Amount', 'Status']" [loading]="isLoading">
+                <tr *ngFor="let p of outstandingPenalties">
+                    <td>
+                        <div class="book-info">
+                            <div class="book-ic" [style.background-color]="getAccentColor(p.id)">
+                                {{ p.bookTitle?.charAt(0) || 'B' }}
+                            </div>
+                            <strong>{{ p.bookTitle }}</strong>
+                        </div>
+                    </td>
+                    <td><span class="date-text">{{ p.dueDate | date:'mediumDate' }}</span></td>
+                    <td><span class="amount-text">{{ p.penaltyAmount | currency:'INR' }}</span></td>
+                    <td><app-status-badge label="Unpaid" type="error"></app-status-badge></td>
+                </tr>
+            </app-data-table>
+        </section>
+
+        <!-- History Section -->
+        <section class="section-card" *ngIf="penaltyHistory.length > 0">
+            <h2>Penalty History</h2>
+            <app-data-table [headers]="['Book', 'Settled Date', 'Paid Amount', 'Status']" [loading]="isLoading">
+                <tr *ngFor="let p of penaltyHistory">
+                    <td><strong>{{ p.bookTitle }}</strong></td>
+                    <td><span class="date-text">{{ (p.settledDate || p.dueDate) | date:'mediumDate' }}</span></td>
+                    <td><span>{{ p.penaltyAmount | currency:'INR' }}</span></td>
+                    <td><app-status-badge label="Paid" type="success"></app-status-badge></td>
+                </tr>
+            </app-data-table>
+        </section>
+    </div>
+</div>

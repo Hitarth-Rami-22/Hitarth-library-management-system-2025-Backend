@@ -482,3 +482,28 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Frontend - library-management-system-UI
+library-management-system-frontend-2025/library-management-system-UI/dist/
+library-management-system-frontend-2025/library-management-system-UI/tmp/
+library-management-system-frontend-2025/library-management-system-UI/out-tsc/
+library-management-system-frontend-2025/library-management-system-UI/bazel-out/
+library-management-system-frontend-2025/library-management-system-UI/node_modules/
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Miscellaneous
+library-management-system-frontend-2025/library-management-system-UI/.angular/cache/
+library-management-system-frontend-2025/library-management-system-UI/connect.lock
+library-management-system-frontend-2025/library-management-system-UI/coverage/
+library-management-system-frontend-2025/library-management-system-UI/libpeerconnection.log
+library-management-system-frontend-2025/library-management-system-UI/testem.log
+library-management-system-frontend-2025/library-management-system-UI/typings/

@@ -1,0 +1,192 @@
+<div class="borrow-container">
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-left">
+      <div class="header-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+          <path
+            d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+        </svg>
+      </div>
+      <div>
+        <h1 class="page-title">Borrow Requests</h1>
+        <p class="page-subtitle">Approve, reject, and track all student borrow requests</p>
+      </div>
+    </div>
+    <div class="header-actions">
+      <div class="search-wrap">
+        <svg class="search-ic" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input type="text" class="search-inp" [(ngModel)]="searchTerm" placeholder="Search book or student…"
+          (input)="applyFilter()">
+      </div>
+      <button class="refresh-btn" (click)="loadRequests()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="23 4 23 10 17 10" />
+          <polyline points="1 20 1 14 7 14" />
+          <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+        </svg>
+        Refresh
+      </button>
+    </div>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-row" *ngIf="!isLoading">
+    <div class="stat-card pending" (click)="setFilter(0)">
+      <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
+        </svg></div>
+      <div class="stat-info"><span class="stat-value">{{ getCountByStatus(0) }}</span><span
+          class="stat-label">Pending</span></div>
+    </div>
+    <div class="stat-card approved" (click)="setFilter(1)">
+      <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <polyline points="20 6 9 17 4 12" />
+        </svg></div>
+      <div class="stat-info"><span class="stat-value">{{ getCountByStatus(1) }}</span><span
+          class="stat-label">Approved</span></div>
+    </div>
+    <div class="stat-card rejected" (click)="setFilter(2)">
+      <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg></div>
+      <div class="stat-info"><span class="stat-value">{{ getCountByStatus(2) }}</span><span
+          class="stat-label">Rejected</span></div>
+    </div>
+    <div class="stat-card returned" (click)="setFilter(3)">
+      <div class="stat-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2">
+          <polyline points="1 4 1 10 7 10" />
+          <path d="M3.51 15a9 9 0 1 0 .49-3.88" />
+        </svg></div>
+      <div class="stat-info"><span class="stat-value">{{ getCountByStatus(3) }}</span><span
+          class="stat-label">Returned</span></div>
+    </div>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="loading-state">
+    <div class="loader-ring">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+    <p>Loading borrow requests…</p>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!isLoading">
+
+    <!-- Filter Tabs -->
+    <div class="filter-tabs">
+      <button class="tab-btn" [ngClass]="{active: activeFilter === null}" (click)="setFilter(null)">All</button>
+      <button class="tab-btn amber" [ngClass]="{active: activeFilter === 0}" (click)="setFilter(0)">Pending</button>
+      <button class="tab-btn green" [ngClass]="{active: activeFilter === 1}" (click)="setFilter(1)">Approved</button>
+      <button class="tab-btn red" [ngClass]="{active: activeFilter === 2}" (click)="setFilter(2)">Rejected</button>
+      <button class="tab-btn blue" [ngClass]="{active: activeFilter === 3}" (click)="setFilter(3)">Returned</button>
+    </div>
+
+    <div *ngIf="filteredRequests.length > 0; else noRequests" class="table-card">
+      <div class="table-info-bar">
+        <span class="result-count">Showing <strong>{{ filteredRequests.length }}</strong> of <strong>{{ requests.length
+            }}</strong> requests</span>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Book Title</th>
+              <th>Student</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let r of filteredRequests; let i = index" class="table-row">
+              <td class="row-index">{{ i + 1 }}</td>
+              <td>
+                <div class="book-cell">
+                  <div class="book-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2">
+                      <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                      <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                    </svg>
+                  </div>
+                  <span class="book-title">{{ r.book.title }}</span>
+                </div>
+              </td>
+              <td>
+                <div class="student-cell">
+                  <div class="avatar">{{ r.student.fullName.charAt(0).toUpperCase() }}</div>
+                  <span class="student-name">{{ r.student.fullName }}</span>
+                </div>
+              </td>
+              <td>
+                <span class="status-pill" [ngClass]="getStatusClass(r.status)">
+                  <span class="status-dot"></span>{{ getStatusText(r.status) }}
+                </span>
+              </td>
+              <td class="actions-cell">
+                <button class="action-btn approve" (click)="updateStatus(r.id, 1)" [disabled]="r.status !== 0"
+                  title="Approve">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>Approve
+                </button>
+                <button class="action-btn reject" (click)="updateStatus(r.id, 2)" [disabled]="r.status !== 0"
+                  title="Reject">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.5">
+                    <line x1="18" y1="6" x2="6" y2="18" />
+                    <line x1="6" y1="6" x2="18" y2="18" />
+                  </svg>Reject
+                </button>
+                <button class="action-btn returned" (click)="updateStatus(r.id, 3)" [disabled]="r.status !== 1"
+                  title="Mark Returned">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2.2">
+                    <polyline points="1 4 1 10 7 10" />
+                    <path d="M3.51 15a9 9 0 1 0 .49-3.88" />
+                  </svg>Returned
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <ng-template #noRequests>
+      <div class="empty-state">
+        <div class="empty-illustration">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="1.2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+          </svg>
+        </div>
+        <h3>No Requests Found</h3>
+        <p>{{ activeFilter !== null ? 'Try a different filter.' : 'When students request books, they will appear here.'
+          }}</p>
+        <button class="refresh-btn" (click)="setFilter(null); loadRequests()">Clear Filter</button>
+      </div>
+    </ng-template>
+  </div>
+</div>

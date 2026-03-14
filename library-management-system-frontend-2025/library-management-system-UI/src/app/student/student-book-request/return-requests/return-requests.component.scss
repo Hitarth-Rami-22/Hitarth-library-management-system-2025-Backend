@@ -1,0 +1,312 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+$font: 'Inter', sans-serif;
+$indigo: #6366f1;
+$indigo-dark: #4f46e5;
+$indigo-lt: #eef2ff;
+$green: #10b981;
+$green-lt: #d1fae5;
+$amber: #f59e0b;
+$text: #1e293b;
+$sub: #64748b;
+$border: #e2e8f0;
+$card: #ffffff;
+$bg: #f8fafc;
+$ease: all 0.2s ease;
+$r-lg: 16px;
+$r-md: 10px;
+$shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+.page-wrap {
+  padding: 2.5rem;
+  min-height: 100%;
+}
+
+/* ── Page Header ───────────────────── */
+.page-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2.5rem;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+
+  .hdr-left {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+  }
+
+  .hdr-icon {
+    width: 54px;
+    height: 54px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+
+    svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    &.green {
+      background: $green-lt;
+      color: $green;
+    }
+  }
+
+  .pg-title {
+    font-size: 1.85rem;
+    font-weight: 800;
+    margin: 0;
+    letter-spacing: -0.5px;
+  }
+
+  .pg-sub {
+    color: $sub;
+    margin: 0.25rem 0 0;
+    font-size: 0.95rem;
+  }
+}
+
+.btn-refresh {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.8rem 1.25rem;
+  background: #fff;
+  border: 1.5px solid $border;
+  border-radius: $r-md;
+  font-weight: 700;
+  font-family: $font;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: $ease;
+
+  svg {
+    width: 18px;
+    height: 18px;
+    color: $sub;
+  }
+
+  &:hover {
+    background: $bg;
+    border-color: $green;
+    color: $green;
+
+    svg {
+      color: $green;
+      animation: spin 0.8s ease-in-out;
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── Content Card ────────────────────── */
+.content-card {
+  background: #fff;
+  border: 1.5px solid $border;
+  border-radius: $r-lg;
+  overflow: hidden;
+  box-shadow: $shadow;
+}
+
+.card-hdr {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1.5px solid $border;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba($bg, 0.5);
+
+  .card-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 700;
+    font-size: 1rem;
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      background: $green;
+      border-radius: 50%;
+      box-shadow: 0 0 0 4px rgba($green, 0.15);
+    }
+  }
+
+  .badge {
+    padding: 0.25rem 0.65rem;
+    background: $green-lt;
+    color: darken($green, 15%);
+    font-size: 0.75rem;
+    font-weight: 700;
+    border-radius: 50px;
+  }
+}
+
+/* ── Table ──────────────────────────── */
+.tbl-container {
+  overflow-x: auto;
+}
+
+.premium-tbl {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+
+  th {
+    padding: 1rem 1.5rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: $sub;
+    background: #fafafa;
+    border-bottom: 1.5px solid $border;
+  }
+
+  td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1.5px solid #f1f5f9;
+    font-size: 0.9rem;
+    vertical-align: middle;
+  }
+
+  .row-num {
+    font-weight: 700;
+    color: $sub;
+    width: 50px;
+  }
+
+  .book-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .book-ic {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    color: #fff;
+    font-size: 0.9rem;
+  }
+
+  .book-meta {
+    display: flex;
+    flex-direction: column;
+
+    .title {
+      font-weight: 700;
+      color: $text;
+    }
+
+    .author {
+      font-size: 0.75rem;
+      color: $sub;
+    }
+  }
+
+  .date-cell {
+    color: $sub;
+    font-family: 'Inter', monospace;
+    font-size: 0.85rem;
+  }
+}
+
+/* ── Return Button ──────────────────── */
+.btn-return {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 1rem;
+  background: #fff;
+  border: 1.5px solid $indigo-lt;
+  border-radius: 8px;
+  color: $indigo;
+  font-weight: 700;
+  font-family: $font;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: $ease;
+
+  svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.3s ease;
+  }
+
+  &:hover {
+    background: $indigo;
+    color: #fff;
+    border-color: $indigo;
+    box-shadow: 0 4px 12px rgba($indigo, 0.2);
+
+    svg {
+      transform: translateY(-2px);
+    }
+  }
+}
+
+/* ── Loader ─────────────────────────── */
+.loader-wrap {
+  padding: 4rem;
+  text-align: center;
+  color: $sub;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
+  .spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid $border;
+    border-top-color: $green;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+/* ── Empty State ────────────────────── */
+.empty-state {
+  padding: 5rem 2rem;
+  text-align: center;
+  color: $sub;
+
+  .empty-ic {
+    font-size: 3rem;
+    margin-bottom: 1.25rem;
+  }
+
+  h3 {
+    font-size: 1.25rem;
+    color: $text;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .page-wrap {
+    padding: 1.5rem;
+  }
+
+  .page-hdr .pg-title {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,315 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+$font: 'Inter', sans-serif;
+$indigo: #6366f1;
+$indigo-dark: #4f46e5;
+$indigo-lt: #eef2ff;
+$text: #1e293b;
+$sub: #64748b;
+$border: #e2e8f0;
+$card: #ffffff;
+$bg: #f8fafc;
+$ease: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+$r-lg: 16px;
+$r-md: 10px;
+$shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+:host {
+  display: block;
+  height: 100vh;
+  font-family: $font;
+  color: $text;
+}
+
+.layout-container {
+  display: flex;
+  height: 100vh;
+  background: $bg;
+}
+
+/* ── Mobile Header ─────────────────────── */
+.mobile-hdr {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #fff;
+  border-bottom: 1.5px solid $border;
+  z-index: 100;
+  padding: 0 1.25rem;
+  align-items: center;
+  justify-content: space-between;
+
+  .menu-trigger {
+    background: none;
+    border: none;
+    color: $text;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    svg {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  .m-brand {
+    font-weight: 800;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, $indigo, $indigo-dark);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* ── Sidebar ─────────────────────────── */
+.sidebar {
+  width: 280px;
+  background: #fff;
+  border-right: 1.5px solid $border;
+  display: flex;
+  flex-direction: column;
+  z-index: 101;
+  transition: $ease;
+  flex-shrink: 0;
+
+  .brand {
+    padding: 1.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 800;
+    font-size: 1.2rem;
+    color: $text;
+
+    .brand-ic {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, $indigo, $indigo-dark);
+      border-radius: $r-md;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+
+  .nav {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 0.75rem;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: $sub;
+      letter-spacing: 0.8px;
+      margin: 1.5rem 0.75rem 0.6rem;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.75rem 0.85rem;
+      border-radius: $r-md;
+      color: $text;
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+      transition: $ease;
+
+      .nav-ic {
+        width: 20px;
+        height: 20px;
+        color: $sub;
+        transition: $ease;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      &:hover {
+        background: $indigo-lt;
+        color: $indigo;
+
+        .nav-ic {
+          color: $indigo;
+        }
+      }
+
+      &.active {
+        background: $indigo;
+        color: #fff;
+        box-shadow: 0 4px 12px rgba($indigo, 0.25);
+
+        .nav-ic {
+          color: #fff;
+        }
+      }
+    }
+  }
+}
+
+/* ── User Chip & Logout ───────────────── */
+.user-chip {
+  margin: 1rem 0.75rem 1.25rem;
+  padding: 0.85rem 1rem;
+  background: $bg;
+  border-radius: $r-lg;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1.5px solid $border;
+
+  .u-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    min-width: 0;
+  }
+
+  .u-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 12px;
+    background: $indigo;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1rem;
+    flex-shrink: 0;
+  }
+
+  .u-meta {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+
+    .u-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: $text;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .u-role {
+      font-size: 0.7rem;
+      color: $sub;
+      font-weight: 500;
+    }
+  }
+
+  .btn-logout {
+    background: none;
+    border: none;
+    color: $sub;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: $ease;
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    &:hover {
+      background: #fff;
+      color: #ef4444;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+/* ── Main Area ────────────────────────── */
+.main {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+
+.top-nav-spacer {
+  display: none;
+  height: 60px;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+}
+
+/* ── Responsive ────────────────────────── */
+@media (max-width: 768px) {
+  .mobile-hdr {
+    display: flex;
+  }
+
+  .top-nav-spacer {
+    display: block;
+  }
+
+  .sidebar {
+    position: fixed;
+    left: -280px;
+    top: 0;
+    bottom: 0;
+    width: 280px;
+    box-shadow: 20px 0 50px rgba(0, 0, 0, 0.1);
+
+    &.open {
+      left: 0;
+    }
+  }
+
+  .overlay {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transition: $ease;
+
+    .menu-open & {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  .nav .nav-item {
+    padding: 0.85rem 1rem;
+  }
+}
